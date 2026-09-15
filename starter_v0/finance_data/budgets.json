@@ -1,0 +1,97 @@
+{
+  "month": "2026-09",
+  "currency": "VND",
+  "overall_summary": {
+    "target_income": 25000000,
+    "max_expense_limit": 14000000,
+    "target_savings": 11000000,
+    "savings_rate_target": 0.44
+  },
+  "categories": [
+    {
+      "id": "food",
+      "name": "Ăn uống",
+      "type": "expense",
+      "monthly_limit": 4000000,
+      "alert_threshold_percent": 80,
+      "description": "Bao gồm ăn sáng, trưa, tối, cafe, ăn ngoài và đồ ăn vặt"
+    },
+    {
+      "id": "transport",
+      "name": "Đi lại",
+      "type": "expense",
+      "monthly_limit": 1200000,
+      "alert_threshold_percent": 80,
+      "description": "Xăng xe, bảo dưỡng định kỳ, gửi xe, Grab/Be"
+    },
+    {
+      "id": "housing",
+      "name": "Nhà ở & Tiện ích",
+      "type": "expense",
+      "monthly_limit": 4500000,
+      "alert_threshold_percent": 90,
+      "description": "Tiền thuê nhà, điện, nước, internet, phí dịch vụ chung cư"
+    },
+    {
+      "id": "shopping",
+      "name": "Mua sắm & Đồ dùng",
+      "type": "expense",
+      "monthly_limit": 2000000,
+      "alert_threshold_percent": 75,
+      "description": "Quần áo, đồ gia dụng, thiết bị công nghệ cá nhân"
+    },
+    {
+      "id": "entertainment",
+      "name": "Giải trí & Sở thích",
+      "type": "expense",
+      "monthly_limit": 1500000,
+      "alert_threshold_percent": 80,
+      "description": "Xem phim, game, du lịch dã ngoại, sách truyện"
+    },
+    {
+      "id": "health",
+      "name": "Y tế & Sức khỏe",
+      "type": "expense",
+      "monthly_limit": 800000,
+      "alert_threshold_percent": 85,
+      "description": "Thuốc men, khám sức khỏe, thực phẩm bổ sung, gym"
+    },
+    {
+      "id": "education",
+      "name": "Học tập & Phát triển",
+      "type": "expense",
+      "monthly_limit": 1000000,
+      "alert_threshold_percent": 80,
+      "description": "Khóa học online, sách chuyên ngành, chứng chỉ"
+    },
+    {
+      "id": "other_expense",
+      "name": "Chi phí khác",
+      "type": "expense",
+      "monthly_limit": 500000,
+      "alert_threshold_percent": 80,
+      "description": "Các khoản phát sinh đột xuất, hiếu hỉ, quà biếu"
+    },
+    {
+      "id": "salary",
+      "name": "Lương chính",
+      "type": "income",
+      "expected_monthly": 20000000,
+      "description": "Thu nhập cố định hàng tháng từ công ty"
+    },
+    {
+      "id": "freelance",
+      "name": "Làm thêm / Dự án ngoài",
+      "type": "income",
+      "expected_monthly": 4000000,
+      "description": "Thu nhập làm ngoài, nhận job tự do"
+    },
+    {
+      "id": "investment",
+      "name": "Lợi nhuận đầu tư",
+      "type": "income",
+      "expected_monthly": 1000000,
+      "description": "Cổ tức, lãi tiết kiệm ngân hàng, quỹ mở"
+    }
+  ]
+}
