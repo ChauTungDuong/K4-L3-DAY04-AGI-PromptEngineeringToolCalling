@@ -75,7 +75,7 @@ python scripts/preflight_provider.py --provider openrouter
 python run_eval.py --provider openrouter --version v0 --suite base --eval-cases data/eval_base.json
 ```
 
-Thay `openrouter` bằng `openai`, `anthropic` hoặc `gemini` khi dùng provider khác. Không commit `.env`.
+Thay `openrouter` bằng `openai`, `anthropic`, `gemini` hoặc `kira` khi dùng provider khác. Với Kira, thêm `KIRA_API_KEY` vào `.env`; có thể đặt `KIRA_MODEL=qwen3.8-flash-free` và `KIRA_BASE_URL=https://kiraai.vn`. Sau đó chạy `python scripts/preflight_provider.py --provider kira` và dùng `--provider kira` cho eval/chat. Không commit `.env`.
 
 ## Tài liệu cần đọc
 
