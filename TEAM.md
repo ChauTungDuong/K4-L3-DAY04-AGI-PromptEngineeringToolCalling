@@ -55,11 +55,11 @@
 
 ### Đỗ Mạnh Nghĩa — 2A202602971
 
-- Phần việc và file/commit/PR:
-- Quyết định, khó khăn và cách xử lý:
-- Điều đã học:
+- Phần việc và file/commit/PR:tạo Tools + Bonus Tool + 12 Adversarial cases
+- Quyết định, khó khăn và cách xử lý: khó khăn trong việc chọn tool phù hợp
+- Điều đã học:học được cách prompt và tổ chức code.Biết được luồng hoạt động: System prompt + User input + Tool declarations -> Model -> Text trả lời hoặc tool call -> agent ->tìm function -> tool result
 - AI/công cụ đã dùng và cách kiểm tra:
-- Thời điểm đã tự nộp URL repo chung trên VLearn:
+- Thời điểm đã tự nộp URL repo chung trên VLearn: 21h
 
 ### Nguyễn Ngọc Tuyền — 2A202603010
 
