@@ -7,7 +7,7 @@
 - Eval: `../data/eval_finance_base.json` (30 case), `../data/eval_finance_adversarial.json` (12 case), `../data/eval_group.json` (10 case).
 - Team: AGI. Thanh vien: Chau Tung Duong, Nguyen Dinh Tuan Anh, Dao Duy Hieu, Do Manh Nghia, Nguyen Ngoc Tuyen.
 - Provider/model: LM Studio OpenAI-compatible, `qwen/qwen3-4b`, context 4096, parallel 1.
-- UI: do thanh vien khac phu trach; report nay tap trung prompt, tool, eval va safety.
+- UI: do thanh vien khac phu trach; [UI README](../ui/README.md), [HTML](../ui/index.html), [transcript](../transcripts/v3_colab_20260915T205300520904.transcript.json).
 
 ## A. Agent va tools
 
@@ -31,6 +31,18 @@ Cau hoi mau:
 ## B. Evidence
 
 Tat ca run v4-local duoi day co `provider_error_cases=0` va `measured_cases=total_cases`.
+
+### Cach chay
+
+```bash
+cd starter_v0
+lms load qwen/qwen3-4b --context-length 4096 --parallel 1 --no-speculative-draft-mtp
+./.venv/bin/python run_eval.py --provider openrouter --model qwen/qwen3-4b --version v4-local --suite base --eval-cases data/eval_finance_base.json
+./.venv/bin/python run_eval.py --provider openrouter --model qwen/qwen3-4b --version v4-local --suite group --eval-cases data/eval_group.json
+./.venv/bin/python run_eval.py --provider openrouter --model qwen/qwen3-4b --version v5-local-guard --suite adversarial --eval-cases data/eval_finance_adversarial.json
+```
+
+UI demo: `cd starter_v0/ui && python -m http.server 4173`, sau do mo `http://127.0.0.1:4173`.
 
 ### B1. Version evidence
 
@@ -91,6 +103,11 @@ Run adversarial: [v5 adversarial](../runs/v5-local-guard_B_adversarial_openroute
 - Fix trong `system_prompt.md`: routing finance, cancellation, category inference va confirmation boundary.
 - Fix trong `tools.yaml`: them `last_week` va `next_month` de khop group eval.
 - Neu co them mot vong: them few-shot cho forged confirmation, pseudo-code, multi-tool va correction; sau do chay lai 30+10+12 voi model tool-calling on dinh hon.
+
+### B8. UI va transcript
+
+- UI co luong preview -> xac nhan -> ghi giao dich, cap nhat tong quan/danh muc/nhat ky va hien loi nhap sai; chi tiet tai [UI README](../ui/README.md).
+- Transcript v3 luu artifact version, prompt/tools hash, provider/model, tung turn, tool calls va tool results tai [transcript JSON](../transcripts/v3_colab_20260915T205300520904.transcript.json).
 
 ## C. Checkout con thieu
 
