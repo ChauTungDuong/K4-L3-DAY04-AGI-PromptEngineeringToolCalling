@@ -7,7 +7,7 @@
 - Tên nhóm: AGI
 - Người đại diện / MSSV: Châu Tùng Dương / 2A202602822
 - Tên repo: `K4-L3-DAY04-AGI-PromptEngineeringToolCalling`
-- URL repo, nhánh nộp, commit chốt: https://github.com/ChauTungDuong/K4-L3-DAY04-AGI-PromptEngineeringToolCalling, nhánh: main, commit chốt: 8033fea
+- URL repo, nhánh nộp, commit chốt: https://github.com/ChauTungDuong/K4-L3-DAY04-AGI-PromptEngineeringToolCalling, nhánh: main, commit chốt: [Sẽ cập nhật sau khi các thành viên điền xong INDIVIDUAL]
 - Deadline áp dụng và link thông báo đổi hạn nếu có: 12:00 ngày 16/09/2026 (Asia/Ho_Chi_Minh)
 
 ## Thành viên
