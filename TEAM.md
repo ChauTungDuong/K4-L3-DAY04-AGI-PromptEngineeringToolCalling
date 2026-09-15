@@ -49,11 +49,12 @@
 
 ### Đào Duy Hiếu — 2A202602651
 
-- Phần việc và file/commit/PR:
-- Quyết định, khó khăn và cách xử lý:
-- Điều đã học:
-- AI/công cụ đã dùng và cách kiểm tra:
-- Thời điểm đã tự nộp URL repo chung trên VLearn:
+- Phần việc và file/commit/PR: Phụ trách thiết kế eval datasets cho agent tài chính; tạo 
+eval_finance_base.json (30 cases) và cập nhật eval_group.json (10 cases) trên branch feat/eval-datasets, ánh xạ toàn bộ test cases sang bộ tools chuẩn gồm get_summary, get_category_breakdown, record_transaction, clarify, search_financial_advice và bonus tool budget_forecast_alert.
+- Quyết định, khó khăn và cách xử lý:Chuyển đổi schema từ IT Helpdesk sang finance domain, đảm bảo coverage cho 20 single-turn cases (routing tools, missing info, out-of-scope, parallel calls) và 10 multi-turn cases (clarification flow, correction, confirmation boundary). Khó khăn là map chính xác arguments của tools mới (period vs date_range, confirmed flag trong record_transaction, missing_fields array trong clarify); giải quyết bằng cách đọc kỹ tool specs và tham khảo eval_base.json structure.
+- Điều đã học:Eval cases phải test boundary conditions (xác nhận trước write action), tool routing accuracy (phân biệt get_summary vs get_category_breakdown), argument extraction (period mapping, category inference), và multiturn state management (carry context, latest intent wins). Schema consistency quan trọng hơn số lượng cases - mỗi case cần có clear failure_type và expect structure.
+- AI/công cụ đã dùng và cách kiểm tra:Dùng Kiro AI để generate và refine eval cases theo tool specs, kiểm tra JSON syntax validity, verify schema match với eval_base.json template. Chạy thử python run_eval.py --suite base với eval_base.json cũ để hiểu flow, confirm file structure hợp lệ bằng JSON validator. Chưa chạy được full eval với finance tools vì tools chưa implement.
+- Thời điểm đã tự nộp URL repo chung trên VLearn: 20:54:00 15/9/2026
 
 ### Đỗ Mạnh Nghĩa — 2A202602971
 
