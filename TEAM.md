@@ -18,7 +18,7 @@
 | Nguyễn Đình Tuấn Anh | 2A202602735 | | Prompt Engineer (v0 - v3) | `starter_v0/artifacts/system_prompt.md`, `version_log.csv`, `runs/` |
 | Đào Duy Hiếu | 2A202602651 | DuyHieu180144 | Dataset Specialist (30 base + 10 group) | `starter_v0/data/eval_finance_base.json`, `eval_group.json`, commit `aa5c577` |
 | Đỗ Mạnh Nghĩa | 2A202602971 | | Tools & Safety Engineer | `starter_v0/tools/`, `eval_finance_adversarial.json` |
-| Nguyễn Ngọc Tuyền | 2A202603010 | | UI/UX & Transcript Developer | `starter_v0/transcripts/` |
+| Nguyễn Ngọc Tuyền | 2A202603010 | | UI/UX & Transcript Developer | `starter_v0/ui/`, `starter_v0/transcripts/` |
 
 ## Nhận xét chung
 
@@ -66,8 +66,8 @@ eval_finance_base.json (30 cases) và cập nhật eval_group.json (10 cases) tr
 
 ### Nguyễn Ngọc Tuyền — 2A202603010
 
-- Phần việc và file/commit/PR:
-- Quyết định, khó khăn và cách xử lý:
-- Điều đã học:
-- AI/công cụ đã dùng và cách kiểm tra:
-- Thời điểm đã tự nộp URL repo chung trên VLearn:
+- Phần việc và file/commit/PR: Thiết kế và triển khai UI tại `starter_v0/ui/index.html`, `starter_v0/ui/styles.css`, `starter_v0/ui/app.js`; commit: chờ nhóm tích hợp.
+- Quyết định, khó khăn và cách xử lý: Xây dựng sao cho mô phỏng đúng luồng preview → xác nhận → ghi giao dịch, tránh ghi ngay khi người dùng vừa nhập dữ liệu.
+- Điều đã học: Cách biểu diễn trạng thái tool/action trong UI, thiết kế bước xác nhận cho thao tác ghi dữ liệu và tổ chức giao diện responsive từ dữ liệu mock.
+- AI/công cụ đã dùng và cách kiểm tra: Dùng Codex với skill frontend-design để hỗ trợ thiết kế; tự kiểm tra giao diện qua trình duyệt, kiểm tra responsive và các luồng lọc danh mục, mở form, xem preview, xác nhận và thêm giao dịch.
+- Thời điểm đã tự nộp URL repo chung trên VLearn: 11h38p ngày 15/09/2026
