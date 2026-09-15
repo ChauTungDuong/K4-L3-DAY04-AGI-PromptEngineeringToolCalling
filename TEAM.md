@@ -7,35 +7,37 @@
 - Tên nhóm: AGI
 - Người đại diện / MSSV: Châu Tùng Dương / 2A202602822
 - Tên repo: `K4-L3-DAY04-AGI-PromptEngineeringToolCalling`
-- URL repo, nhánh nộp, commit chốt: https://github.com/ChauTungDuong/K4-L3-DAY04-AGI-PromptEngineeringToolCalling, nhánh : main, commit chốt : 
-- Deadline áp dụng và link thông báo đổi hạn nếu có:
+- URL repo, nhánh nộp, commit chốt: https://github.com/ChauTungDuong/K4-L3-DAY04-AGI-PromptEngineeringToolCalling, nhánh: main, commit chốt: 8033fea
+- Deadline áp dụng và link thông báo đổi hạn nếu có: 12:00 ngày 16/09/2026 (Asia/Ho_Chi_Minh)
 
 ## Thành viên
 
 | Họ và tên | MSSV | GitHub | Vai trò và công việc | File/commit/PR |
 |---|---|---|---|---|
-| Châu Tùng Dương | 2A202602822 |  | Trưởng nhóm |  |
-| Nguyễn Đình Tuấn Anh | 2A202602735 |  |  |  |
-| Đào Duy Hiếu | 2A202602651 |  |  |  |
-| Đỗ Mạnh Nghĩa | 2A202602971 |  |  |  |
-| Nguyễn Ngọc Tuyền | 2A202603010 |  |  |  |
+| Châu Tùng Dương | 2A202602822 | ChauTungDuong | Trưởng nhóm, Data Architect & Integration | `starter_v0/finance_data/`, `README.md`, `TEAM.md`, commits `4043784`, `482807e` |
+| Nguyễn Đình Tuấn Anh | 2A202602735 | | Prompt Engineer (v0 - v3) | `starter_v0/artifacts/system_prompt.md`, `version_log.csv`, `runs/` |
+| Đào Duy Hiếu | 2A202602651 | DuyHieu180144 | Dataset Specialist (30 base + 10 group) | `starter_v0/data/eval_finance_base.json`, `eval_group.json`, commit `aa5c577` |
+| Đỗ Mạnh Nghĩa | 2A202602971 | | Tools & Safety Engineer | `starter_v0/tools/`, `eval_finance_adversarial.json` |
+| Nguyễn Ngọc Tuyền | 2A202603010 | | UI/UX & Transcript Developer | `starter_v0/transcripts/` |
 
 ## Nhận xét chung
 
-- Kết quả và bằng chứng:
-- Thay đổi hiệu quả nhất:
-- Giới hạn còn lại:
-- Cách phân công và tích hợp:
+- Kết quả và bằng chứng: Nhóm đã hoàn thành chu trình cải tiến v0–v3 với 4 file run trong `starter_v0/runs/` (`provider_error_cases == 0`), xây dựng trọn vẹn bộ mock data tài chính (`finance_data/`), bộ 30 test case cơ bản, 10 case nhóm, 12 case an toàn và transcript tương tác trong `transcripts/`.
+- Thay đổi hiệu quả nhất: Chuẩn hóa enum danh mục trong `tools.yaml` và áp dụng quy tắc bắt buộc gọi `clarify` để xác nhận trước khi thực hiện hành động ghi dữ liệu trong `system_prompt.md`.
+- Giới hạn còn lại: Model nhỏ (Qwen 4B/7B) đôi khi vẫn bị nhầm lẫn giữa việc gọi tool tra cứu và trả lời văn bản tự do nếu prompt không có chỉ dẫn ép buộc chặt chẽ; cần tiếp tục tinh chỉnh ở các ca đa lượt chuyển đổi intent.
+- Cách phân công và tích hợp: Áp dụng phương pháp phân chia vùng file độc quyền (Contract-First), 5 thành viên làm việc song song trên các nhánh riêng (`tuananh`, `DuyHieu`, `nghia`...) và gộp tuần tự vào nhánh `main` không xảy ra xung đột mã nguồn.
 
 ## INDIVIDUAL
 
 ### Châu Tùng Dương — 2A202602822
 
-- Phần việc và file/commit/PR: Trưởng nhóm, phân công công việc cho các thành viên, tổng hợp, merge code
-- Quyết định, khó khăn và cách xử lý:
-- Điều đã học:
-- AI/công cụ đã dùng và cách kiểm tra:
-- Thời điểm đã tự nộp URL repo chung trên VLearn:
+- Phần việc và file/commit/PR: Trưởng nhóm (Team Lead); phân công công việc và điều phối kiến trúc cho 5 thành viên; khởi tạo và chuẩn hóa toàn bộ mock data cho đề tài Tài chính cá nhân trong `starter_v0/finance_data/` (`budgets.json`, `categories.json`, `transactions.json`, `payment_methods.json`, `financial_knowledge.json`); cập nhật `README.md`, `TEAM.md`; review và merge các branch/PR vào `main` (commits `4043784`, `482807e`, commit merge).
+- Quyết định, khó khăn và cách xử lý: 
+  - Khó khăn: Đổi đề tài từ IT Helpdesk sang Quản lý Tài chính Cá nhân cần thiết kế lại cấu trúc dữ liệu hoàn toàn mới và dễ gây xung đột khi 5 thành viên code cùng lúc trên 1 repo.
+  - Xử lý: Áp dụng phương pháp "Contract-First", chốt danh mục tool và schema dữ liệu ngay từ đầu; phân quyền file độc lập cho từng người để đảm bảo 0 xung đột; tách riêng `categories.json` và `payment_methods.json` để quản lý trực quan và dễ tích hợp.
+- Điều đã học: Nắm vững quy trình quản lý dự án Git phân tán theo mô hình Branching/PR; hiểu sâu cơ chế Tool Calling của LLM và tầm quan trọng của việc chuẩn hóa semantic enum để tránh ảo giác (hallucination).
+- AI/công cụ đã dùng và cách kiểm tra: Sử dụng Antigravity IDE, Git CLI, GitHub Web để rà soát quy chuẩn Rubric, kiểm tra tính toàn vẹn của JSON schema và theo dõi tiến độ các Checkpoint.
+- Thời điểm đã tự nộp URL repo chung trên VLearn: 21:05 ngày 15/09/2026.
 
 ### Nguyễn Đình Tuấn Anh — 2A202602735
 
