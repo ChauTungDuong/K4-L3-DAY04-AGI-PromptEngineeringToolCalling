@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Sổ Chi — demo quản lý chi tiêu cá nhân." />
+    <title>Sổ Chi — Demo quản lý chi tiêu</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Điều hướng chính">
+        <a class="brand" href="#tong-quan" aria-label="Sổ Chi, về tổng quan">
+          <span class="brand-mark" aria-hidden="true">₫</span>
+          <span>Sổ Chi<small>PERSONAL LEDGER</small></span>
+        </a>
+
+        <p class="nav-label">SỔ THEO DÕI</p>
+        <nav class="nav-list">
+          <a class="nav-item active" href="#tong-quan"><span>◒</span>Tổng quan</a>
+          <a class="nav-item" href="#giao-dich"><span>↘</span>Giao dịch</a>
+          <a class="nav-item" href="#danh-muc"><span>⊹</span>Danh mục</a>
+          <a class="nav-item" href="#huong-dan"><span>◌</span>Góc tài chính</a>
+        </nav>
+
+        <section class="side-note" aria-label="Trạng thái dữ liệu demo">
+          <span class="pulse-dot"></span>
+          <div><b>Dữ liệu mô phỏng</b><small>Cập nhật 15.09.2026</small></div>
+        </section>
+        <p class="sidebar-foot">LAB DAY 04<br />AGI · K4-L3B</p>
+      </aside>
+
+      <main id="tong-quan" class="content">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">THÁNG 09 / 2026</p>
+            <h1>Tiền của bạn đang <em>đi đâu?</em></h1>
+          </div>
+          <div class="top-actions">
+            <button class="icon-button" type="button" aria-label="Mở thông báo">⌁<span class="notification-dot"></span></button>
+            <button class="profile" type="button" aria-label="Hồ sơ Nguyễn Tuyền"><span>NT</span><i>⌄</i></button>
+          </div>
+        </header>
+
+        <section class="period-row" aria-label="Chọn khoảng thời gian">
+          <div class="period-tabs" role="tablist" aria-label="Khoảng thời gian">
+            <button role="tab" aria-selected="false" data-period="today">Hôm nay</button>
+            <button role="tab" aria-selected="false" data-period="this_week">Tuần này</button>
+            <button role="tab" aria-selected="true" class="selected" data-period="this_month">Tháng này</button>
+          </div>
+          <button id="open-transaction" class="add-button" type="button"><span>+</span> Ghi giao dịch</button>
+        </section>
+
+        <section class="ledger-hero" aria-labelledby="hero-title">
+          <div class="hero-copy">
+            <p class="eyebrow light">DÒNG TIỀN THÁNG NÀY</p>
+            <h2 id="hero-title">Còn lại <strong id="hero-balance">15.650.000 ₫</strong></h2>
+            <p>Thu nhập đang đủ để bạn đi hết tháng. Hãy để ý nhóm <b>Nhà ở</b> trước khi thêm khoản chi mới.</p>
+            <button id="scroll-forecast" class="text-button" type="button">Xem dự báo ngân sách <span>→</span></button>
+          </div>
+          <div class="receipt" aria-label="Phiếu tổng kết tháng 9">
+            <div class="receipt-head"><span>THÁNG 09</span><span>15 / 30</span></div>
+            <div class="receipt-line"><span>TỔNG THU</span><b id="receipt-income">22.850.000 ₫</b></div>
+            <div class="receipt-line"><span>TỔNG CHI</span><b id="receipt-expense">7.200.000 ₫</b></div>
+            <div class="receipt-total"><span>GIỮ LẠI</span><b id="receipt-balance">15.650.000 ₫</b></div>
+            <div class="receipt-code">•• •• ••• •• ••••</div>
+          </div>
+          <span class="hero-stamp" aria-hidden="true">ĐÃ ĐỐI SOÁT</span>
+        </section>
+
+        <section class="stat-grid" aria-label="Tổng hợp thu chi">
+          <article class="stat-card income-card"><span class="stat-symbol">↗</span><p>Đã thu</p><strong id="income-total">22.850.000 ₫</strong><small>+ 2.850.000 ₫ thu nhập phụ</small></article>
+          <article class="stat-card expense-card"><span class="stat-symbol">↘</span><p>Đã chi</p><strong id="expense-total">7.200.000 ₫</strong><small id="expense-note">51% ngân sách tháng</small></article>
+          <article class="stat-card saved-card"><span class="stat-symbol">✦</span><p>Tỷ lệ giữ lại</p><strong id="saved-rate">68,5%</strong><small>vượt mục tiêu 20%</small></article>
+        </section>
+
+        <section id="danh-muc" class="dashboard-grid">
+          <article class="panel categories-panel">
+            <div class="panel-head"><div><p class="eyebrow">DANH MỤC</p><h2>Khoản chi có dấu vết</h2></div><button class="more-button" type="button" aria-label="Xem chi tiết danh mục">•••</button></div>
+            <div id="category-list" class="category-list"></div>
+            <p class="panel-caption">Chạm một danh mục để lọc các giao dịch gần đây.</p>
+          </article>
+
+          <article id="forecast-panel" class="panel forecast-panel">
+            <div class="panel-head"><div><p class="eyebrow">DỰ BÁO / BONUS</p><h2>Đường băng ngân sách</h2></div><span class="warning-pill">Cần chú ý</span></div>
+            <div class="forecast-figure"><div class="forecast-number"><b>14,4</b><span>triệu ₫<br />dự kiến chi</span></div><div class="forecast-arrow" aria-hidden="true">↗</div></div>
+            <div class="meter" role="img" aria-label="Dự báo dùng 103 phần trăm ngân sách"><span></span></div>
+            <div class="forecast-foot"><p><b>+400.000 ₫</b> so với quỹ 14 triệu</p><button id="advice-button" class="mini-link" type="button">Gợi ý giảm chi →</button></div>
+            <div id="advice-card" class="advice-card" hidden><b>Gợi ý 50/30/20</b><p>Chuyển một phần mua sắm hoặc giải trí sang quỹ dự phòng để đưa dự báo về dưới 14 triệu.</p></div>
+          </article>
+        </section>
+
+        <section id="giao-dich" class="panel transactions-panel">
+          <div class="panel-head"><div><p class="eyebrow">NHẬT KÝ GIAO DỊCH</p><h2 id="transaction-title">Các khoản mới nhất</h2></div><button id="clear-filter" class="filter-button" type="button" hidden>Xóa bộ lọc</button></div>
+          <div id="transaction-list" class="transaction-list"></div>
+          <button id="show-all" class="show-all" type="button">Xem toàn bộ giao dịch <span>↓</span></button>
+        </section>
+
+        <section id="huong-dan" class="knowledge-strip">
+          <div><p class="eyebrow">GÓC TÀI CHÍNH</p><h2>50 / 30 / 20 là gì?</h2><p>Quy tắc gợi ý chia thu nhập: 50% nhu cầu thiết yếu, 30% mong muốn và 20% tiết kiệm hoặc trả nợ.</p></div>
+          <button id="rotate-advice" type="button">Đọc lời khuyên khác <span>→</span></button>
+        </section>
+      </main>
+    </div>
+
+    <div id="transaction-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+      <div class="modal-backdrop" data-close-modal></div>
+      <section class="modal-card">
+        <button class="close-button" type="button" data-close-modal aria-label="Đóng">×</button>
+        <p class="eyebrow">GIAO DỊCH MỚI</p>
+        <h2 id="modal-title">Ghi lại khi bạn nhớ.</h2>
+        <form id="transaction-form">
+          <fieldset><legend>Loại giao dịch</legend><div class="type-switch"><label><input type="radio" name="type" value="expense" checked /><span>Chi tiền</span></label><label><input type="radio" name="type" value="income" /><span>Thu tiền</span></label></div></fieldset>
+          <label class="field-label">Số tiền (VND)<input id="amount" name="amount" type="number" min="1000" step="1000" placeholder="Ví dụ: 50.000" required /></label>
+          <label class="field-label">Danh mục<select id="category" name="category" required></select></label>
+          <label class="field-label">Ghi chú <input id="note" name="note" type="text" maxlength="80" placeholder="Ví dụ: Cà phê với bạn" /></label>
+          <p id="form-error" class="form-error" role="alert"></p>
+          <button class="confirm-button" type="submit">Xem lại trước khi ghi <span>→</span></button>
+        </form>
+      </section>
+    </div>
+
+    <div id="confirm-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="confirm-title" hidden>
+      <div class="modal-backdrop"></div>
+      <section class="modal-card confirm-card">
+        <p class="eyebrow">XÁC NHẬN GIAO DỊCH</p>
+        <h2 id="confirm-title">Thông tin này đã đúng chưa?</h2>
+        <div id="transaction-preview" class="preview-box"></div>
+        <p class="confirm-note">Giao dịch chỉ được ghi vào sổ sau khi bạn xác nhận.</p>
+        <div class="confirm-actions"><button id="back-to-form" class="secondary-button" type="button">Sửa lại</button><button id="confirm-transaction" class="confirm-button" type="button">Xác nhận và ghi</button></div>
+      </section>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
