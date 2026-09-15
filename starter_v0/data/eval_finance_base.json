@@ -7,29 +7,29 @@
       "id": "F01_query_today_spending", "phase": "B", "suite": "base",
       "query": "Hôm nay tôi chi tiêu bao nhiêu tiền?",
       "failure_type": "wrong_tool",
-      "expect": {"tool_calls": [{"name": "query_transactions", "args": {"date_range": "today"}}]},
-      "metadata": {"skill": "route_transaction_query", "difficulty": "easy", "what_it_tests": "Hỏi chi tiêu theo ngày phải dùng query_transactions với date_range."}
+      "expect": {"tool_calls": [{"name": "get_summary", "args": {"period": "today"}}]},
+      "metadata": {"skill": "route_summary", "difficulty": "easy", "what_it_tests": "Hỏi tổng chi tiêu theo ngày phải dùng get_summary với period."}
     },
     {
       "id": "F02_query_week_spending", "phase": "B", "suite": "base",
       "query": "Chi tiêu của tôi trong tuần này như thế nào?",
       "failure_type": "wrong_tool",
-      "expect": {"tool_calls": [{"name": "query_transactions", "args": {"date_range": "this_week"}}]},
-      "metadata": {"skill": "route_week_query", "difficulty": "easy", "what_it_tests": "Tuần này phải map sang this_week trong date_range."}
+      "expect": {"tool_calls": [{"name": "get_summary", "args": {"period": "this_week"}}]},
+      "metadata": {"skill": "route_week_summary", "difficulty": "easy", "what_it_tests": "Tuần này phải map sang this_week trong get_summary."}
     },
     {
       "id": "F03_category_food", "phase": "B", "suite": "base",
-      "query": "Cho tôi biết tất cả các danh mục chi tiêu có sẵn.",
+      "query": "Cho tôi xem chi tiết chi tiêu ăn uống tháng này.",
       "failure_type": "wrong_tool",
-      "expect": {"tool_calls": [{"name": "list_categories", "args": {}}]},
-      "metadata": {"skill": "route_category_list", "difficulty": "easy", "what_it_tests": "Hỏi danh mục phải dùng list_categories."}
+      "expect": {"tool_calls": [{"name": "get_category_breakdown", "args": {"period": "this_month", "category": "food"}}]},
+      "metadata": {"skill": "route_category_breakdown", "difficulty": "medium", "what_it_tests": "Chi tiết theo danh mục phải dùng get_category_breakdown."}
     },
     {
       "id": "F04_add_expense_missing_amount", "phase": "B", "suite": "base",
       "query": "Thêm chi tiêu ăn sáng hôm nay, mua bánh mì.",
       "failure_type": "missing_info",
-      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "text"}}]},
-      "metadata": {"skill": "clarify_amount", "difficulty": "medium", "what_it_tests": "Thiếu số tiền phải hỏi lại, không đoán."}
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"question": "Bạn chi bao nhiêu tiền?", "response_type": "free_text", "missing_fields": ["amount"]}}]},
+      "metadata": {"skill": "clarify_amount", "difficulty": "medium", "what_it_tests": "Thiếu số tiền phải hỏi lại bằng clarify, không đoán."}
     },
     {
       "id": "F05_out_of_scope_cooking", "phase": "B", "suite": "base",
@@ -46,25 +46,25 @@
       "metadata": {"skill": "out_of_scope_weather", "difficulty": "easy", "what_it_tests": "Thời tiết không liên quan finance agent."}
     },
     {
-      "id": "F07_query_category_food", "phase": "B", "suite": "base",
-      "query": "Chi tiêu ăn uống tháng này của tôi là bao nhiêu?",
+      "id": "F07_category_breakdown_transport", "phase": "B", "suite": "base",
+      "query": "Chi tiêu đi lại tháng này chi tiết ra sao?",
       "failure_type": "wrong_tool",
-      "expect": {"tool_calls": [{"name": "query_transactions", "args": {"category": "food", "date_range": "this_month"}}]},
-      "metadata": {"skill": "query_by_category", "difficulty": "medium", "what_it_tests": "Lọc theo category và date_range."}
+      "expect": {"tool_calls": [{"name": "get_category_breakdown", "args": {"period": "this_month", "category": "transport"}}]},
+      "metadata": {"skill": "category_breakdown_transport", "difficulty": "medium", "what_it_tests": "Xem chi tiết category phải dùng get_category_breakdown."}
     },
     {
-      "id": "F08_query_payment_method", "phase": "B", "suite": "base",
-      "query": "Tôi đã chi bao nhiêu bằng ví điện tử tuần này?",
+      "id": "F08_summary_month", "phase": "B", "suite": "base",
+      "query": "Tổng thu chi tháng này của tôi thế nào?",
       "failure_type": "wrong_tool",
-      "expect": {"tool_calls": [{"name": "query_transactions", "args": {"payment_method": "e-wallet", "date_range": "this_week"}}]},
-      "metadata": {"skill": "query_by_payment", "difficulty": "medium", "what_it_tests": "Lọc theo phương thức thanh toán."}
+      "expect": {"tool_calls": [{"name": "get_summary", "args": {"period": "this_month"}}]},
+      "metadata": {"skill": "summary_month", "difficulty": "easy", "what_it_tests": "Tổng thu chi phải dùng get_summary."}
     },
     {
-      "id": "F09_check_budget", "phase": "B", "suite": "base",
-      "query": "Ngân sách ăn uống tháng này của tôi còn lại bao nhiêu?",
+      "id": "F09_financial_advice", "phase": "B", "suite": "base",
+      "query": "Quy tắc 50/30/20 là gì và áp dụng như thế nào?",
       "failure_type": "wrong_tool",
-      "expect": {"tool_calls": [{"name": "check_budget", "args": {"category": "food"}}]},
-      "metadata": {"skill": "route_budget_check", "difficulty": "medium", "what_it_tests": "Hỏi ngân sách phải dùng check_budget."}
+      "expect": {"tool_calls": [{"name": "search_financial_advice", "args": {"topic": "50/30/20"}}]},
+      "metadata": {"skill": "route_advice", "difficulty": "medium", "what_it_tests": "Tra cứu kiến thức tài chính phải dùng search_financial_advice."}
     },
     {
       "id": "F10_meta_no_tool", "phase": "B", "suite": "base",
@@ -74,102 +74,102 @@
       "metadata": {"skill": "meta_no_tool", "difficulty": "easy", "what_it_tests": "Câu hỏi khả năng không cần tool."}
     },
     {
-      "id": "F11_add_income", "phase": "B", "suite": "base",
+      "id": "F11_record_income", "phase": "B", "suite": "base",
       "query": "Ghi nhận thu nhập lương tháng này 20 triệu đồng.",
       "failure_type": "wrong_tool",
-      "expect": {"tool_calls": [{"name": "add_transaction", "args": {"type": "income", "category": "salary", "amount": 20000000}}]},
-      "metadata": {"skill": "route_add_income", "difficulty": "medium", "what_it_tests": "Thu nhập phải có type=income."}
+      "expect": {"tool_calls": [{"name": "record_transaction", "args": {"type": "income", "amount": 20000000, "category": "salary", "note": "Lương tháng này", "confirmed": false}}]},
+      "metadata": {"skill": "route_record_income", "difficulty": "medium", "what_it_tests": "Thu nhập phải có type=income và confirmed=false trước khi lưu."}
     },
     {
-      "id": "F12_confirm_before_delete", "phase": "B", "suite": "base",
-      "query": "Xóa giao dịch TXN-20260915-001 giúp tôi.",
+      "id": "F12_confirm_before_record", "phase": "B", "suite": "base",
+      "query": "Lưu chi tiêu 80000 đồng xăng xe hôm nay.",
       "failure_type": "wrong_boundary",
-      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "yes_no"}}]},
-      "metadata": {"skill": "confirm_write", "difficulty": "medium", "what_it_tests": "Xóa là write action, phải xác nhận trước."}
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"question": "Bạn xác nhận ghi chi tiêu 80000 đồng cho xăng xe?", "response_type": "yes_no"}}]},
+      "metadata": {"skill": "confirm_write", "difficulty": "medium", "what_it_tests": "Ghi dữ liệu là write action, phải xác nhận trước."}
     },
     {
-      "id": "F13_parallel_query_and_budget", "phase": "B", "suite": "base",
-      "query": "Cho tôi biết chi tiêu ăn uống tuần này và ngân sách ăn uống còn lại.",
+      "id": "F13_parallel_summary_and_category", "phase": "B", "suite": "base",
+      "query": "Cho tôi xem tổng chi tiêu tuần này và chi tiết chi tiêu ăn uống.",
       "failure_type": "wrong_tool",
       "expect": {"tool_calls": [
-        {"name": "query_transactions", "args": {"category": "food", "date_range": "this_week"}},
-        {"name": "check_budget", "args": {"category": "food"}}
+        {"name": "get_summary", "args": {"period": "this_week"}},
+        {"name": "get_category_breakdown", "args": {"period": "this_week", "category": "food"}}
       ]},
-      "metadata": {"skill": "parallel_tools", "difficulty": "hard", "what_it_tests": "Một yêu cầu cần cả query và budget check."}
+      "metadata": {"skill": "parallel_tools", "difficulty": "hard", "what_it_tests": "Một yêu cầu cần cả tổng và chi tiết category."}
     },
     {
       "id": "F14_missing_category", "phase": "B", "suite": "base",
       "query": "Thêm chi tiêu 50000 đồng hôm nay.",
       "failure_type": "missing_info",
-      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "text"}}]},
-      "metadata": {"skill": "clarify_category", "difficulty": "medium", "what_it_tests": "Thiếu category phải hỏi lại."}
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"question": "Chi tiêu này thuộc danh mục nào?", "response_type": "free_text", "missing_fields": ["category"]}}]},
+      "metadata": {"skill": "clarify_category", "difficulty": "medium", "what_it_tests": "Thiếu category phải hỏi lại bằng clarify."}
     },
     {
-      "id": "F15_query_specific_date", "phase": "B", "suite": "base",
-      "query": "Chi tiêu của tôi ngày 10 tháng 9 là bao nhiêu?",
+      "id": "F15_summary_specific_date_range", "phase": "B", "suite": "base",
+      "query": "Tổng thu chi từ ngày 1 đến 10 tháng 9 là bao nhiêu?",
       "failure_type": "wrong_arg_value",
-      "expect": {"tool_calls": [{"name": "query_transactions", "args": {"date": "2026-09-10"}}]},
-      "metadata": {"skill": "specific_date_query", "difficulty": "medium", "what_it_tests": "Ngày cụ thể phải format YYYY-MM-DD."}
+      "expect": {"tool_calls": [{"name": "get_summary", "args": {"start_date": "2026-09-01", "end_date": "2026-09-10"}}]},
+      "metadata": {"skill": "specific_date_range", "difficulty": "medium", "what_it_tests": "Khoảng ngày cụ thể phải dùng start_date và end_date."}
     },
     {
       "id": "F16_compare_two_categories", "phase": "B", "suite": "base",
       "query": "So sánh chi tiêu ăn uống và đi lại tháng này.",
       "failure_type": "wrong_tool",
       "expect": {"tool_calls": [
-        {"name": "query_transactions", "args": {"category": "food", "date_range": "this_month"}},
-        {"name": "query_transactions", "args": {"category": "transport", "date_range": "this_month"}}
+        {"name": "get_category_breakdown", "args": {"period": "this_month", "category": "food"}},
+        {"name": "get_category_breakdown", "args": {"period": "this_month", "category": "transport"}}
       ]},
-      "metadata": {"skill": "multiple_categories", "difficulty": "hard", "what_it_tests": "Không được gộp hai categories vào một argument."}
+      "metadata": {"skill": "multiple_categories", "difficulty": "hard", "what_it_tests": "Không được gộp hai categories vào một argument, phải gọi riêng."}
     },
     {
-      "id": "F17_total_income_month", "phase": "B", "suite": "base",
-      "query": "Tổng thu nhập tháng này của tôi là bao nhiêu?",
+      "id": "F17_emergency_fund_advice", "phase": "B", "suite": "base",
+      "query": "Quỹ khẩn cấp là gì và nên dành bao nhiêu?",
       "failure_type": "wrong_tool",
-      "expect": {"tool_calls": [{"name": "query_transactions", "args": {"type": "income", "date_range": "this_month"}}]},
-      "metadata": {"skill": "query_income_type", "difficulty": "medium", "what_it_tests": "Thu nhập phải lọc theo type=income."}
+      "expect": {"tool_calls": [{"name": "search_financial_advice", "args": {"topic": "quỹ khẩn cấp"}}]},
+      "metadata": {"skill": "advice_emergency_fund", "difficulty": "medium", "what_it_tests": "Kiến thức tài chính phải dùng search_financial_advice."}
     },
     {
-      "id": "F18_set_budget", "phase": "B", "suite": "base",
-      "query": "Đặt ngân sách ăn uống tháng này là 5 triệu đồng.",
+      "id": "F18_budget_forecast", "phase": "B", "suite": "base",
+      "query": "Dự báo chi tiêu tháng tới và cảnh báo nếu có rủi ro vỡ quỹ.",
       "failure_type": "wrong_tool",
-      "expect": {"tool_calls": [{"name": "set_budget", "args": {"category": "food", "amount": 5000000, "period": "monthly"}}]},
-      "metadata": {"skill": "route_set_budget", "difficulty": "medium", "what_it_tests": "Đặt ngân sách phải dùng set_budget."}
+      "expect": {"tool_calls": [{"name": "budget_forecast_alert", "args": {"month": "next_month"}}]},
+      "metadata": {"skill": "route_bonus_forecast", "difficulty": "hard", "what_it_tests": "Bonus tool - dự báo và cảnh báo ngân sách."}
     },
     {
-      "id": "F19_query_yesterday", "phase": "B", "suite": "base",
-      "query": "Hôm qua tôi chi tiêu gì?",
+      "id": "F19_category_breakdown_shopping", "phase": "B", "suite": "base",
+      "query": "Chi tiêu mua sắm tuần này có gì?",
       "failure_type": "wrong_tool",
-      "expect": {"tool_calls": [{"name": "query_transactions", "args": {"date_range": "yesterday"}}]},
-      "metadata": {"skill": "query_yesterday", "difficulty": "easy", "what_it_tests": "Hôm qua phải map sang yesterday."}
+      "expect": {"tool_calls": [{"name": "get_category_breakdown", "args": {"period": "this_week", "category": "shopping"}}]},
+      "metadata": {"skill": "breakdown_shopping", "difficulty": "easy", "what_it_tests": "Chi tiết category shopping phải dùng get_category_breakdown."}
     },
     {
-      "id": "F20_financial_advice", "phase": "B", "suite": "base",
-      "query": "Tư vấn cho tôi cách tiết kiệm tiền hiệu quả.",
-      "failure_type": "out_of_scope",
-      "expect": {"no_tool": true, "behavior": "answer_without_tool"},
-      "metadata": {"skill": "financial_knowledge", "difficulty": "medium", "what_it_tests": "Tư vấn tài chính tổng quát không cần gọi tool, trả lời từ kiến thức."}
+      "id": "F20_record_expense_complete", "phase": "B", "suite": "base",
+      "query": "Xác nhận ghi chi tiêu 55000 đồng ăn trưa hôm nay, thanh toán ví điện tử.",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "record_transaction", "args": {"type": "expense", "amount": 55000, "category": "food", "note": "ăn trưa", "confirmed": true}}]},
+      "metadata": {"skill": "record_confirmed", "difficulty": "medium", "what_it_tests": "Có 'xác nhận' phải gọi record với confirmed=true."}
     },
     {
-      "id": "M01_add_expense_clarify_amount", "phase": "B", "suite": "base",
+      "id": "M01_record_expense_clarify_amount", "phase": "B", "suite": "base",
       "turns": [
         {"role": "user", "content": "Thêm chi tiêu ăn trưa hôm nay."},
         {"role": "user", "content": "55000 đồng."},
-        {"role": "user", "content": "Thanh toán bằng ví điện tử, ghi chú là cơm tấm sườn."}
+        {"role": "user", "content": "Ghi chú là cơm tấm sườn, xác nhận lưu."}
       ],
       "failure_type": "missing_info",
-      "expect": {"tool_calls": [{"name": "add_transaction", "args": {"type": "expense", "category": "food", "amount": 55000, "payment_method": "e-wallet", "note": "cơm tấm sườn"}}]},
-      "metadata": {"skill": "multiturn_fill_amount", "difficulty": "hard", "what_it_tests": "Carry category rồi điền amount và payment từ các lượt sau."}
+      "expect": {"tool_calls": [{"name": "record_transaction", "args": {"type": "expense", "category": "food", "amount": 55000, "note": "cơm tấm sườn", "confirmed": true}}]},
+      "metadata": {"skill": "multiturn_fill_amount", "difficulty": "hard", "what_it_tests": "Carry category rồi điền amount, note và confirmed từ các lượt sau."}
     },
     {
-      "id": "M02_confirm_then_add", "phase": "B", "suite": "base",
+      "id": "M02_confirm_then_record", "phase": "B", "suite": "base",
       "turns": [
         {"role": "user", "content": "Thêm chi tiêu 80000 đồng xăng xe hôm nay."},
-        {"role": "user", "content": "Thanh toán tiền mặt."},
+        {"role": "user", "content": "Ghi chú đổ xăng Petrolimex."},
         {"role": "user", "content": "Xác nhận và lưu lại."}
       ],
       "failure_type": "wrong_boundary",
-      "expect": {"tool_calls": [{"name": "add_transaction", "args": {"type": "expense", "category": "transport", "amount": 80000, "payment_method": "cash"}}]},
-      "metadata": {"skill": "multiturn_confirmation", "difficulty": "hard", "what_it_tests": "Sau khi xác nhận mới gọi add_transaction."}
+      "expect": {"tool_calls": [{"name": "record_transaction", "args": {"type": "expense", "category": "transport", "amount": 80000, "note": "đổ xăng Petrolimex", "confirmed": true}}]},
+      "metadata": {"skill": "multiturn_confirmation", "difficulty": "hard", "what_it_tests": "Sau khi xác nhận mới gọi record_transaction với confirmed=true."}
     },
     {
       "id": "M03_correct_amount", "phase": "B", "suite": "base",
@@ -179,22 +179,22 @@
         {"role": "user", "content": "Lưu với số tiền đã sửa."}
       ],
       "failure_type": "wrong_arg_value",
-      "expect": {"tool_calls": [{"name": "add_transaction", "args": {"type": "expense", "category": "food", "amount": 40000}}]},
+      "expect": {"tool_calls": [{"name": "record_transaction", "args": {"type": "expense", "category": "food", "amount": 40000, "note": "ăn sáng", "confirmed": false}}]},
       "metadata": {"skill": "multiturn_correction", "difficulty": "hard", "what_it_tests": "Số tiền sửa sau phải thắng số tiền cũ."}
     },
     {
-      "id": "M04_query_then_budget", "phase": "B", "suite": "base",
+      "id": "M04_category_then_summary", "phase": "B", "suite": "base",
       "turns": [
         {"role": "user", "content": "Chi tiêu giải trí tháng này của tôi là bao nhiêu?"},
-        {"role": "user", "content": "Ngân sách giải trí còn lại bao nhiêu?"},
-        {"role": "user", "content": "Cho tôi xem cả hai thông tin."}
+        {"role": "user", "content": "Cho tôi xem tổng thu chi tháng này."},
+        {"role": "user", "content": "Hiển thị cả hai thông tin."}
       ],
       "failure_type": "wrong_tool",
       "expect": {"tool_calls": [
-        {"name": "query_transactions", "args": {"category": "entertainment", "date_range": "this_month"}},
-        {"name": "check_budget", "args": {"category": "entertainment"}}
+        {"name": "get_category_breakdown", "args": {"period": "this_month", "category": "entertainment"}},
+        {"name": "get_summary", "args": {"period": "this_month"}}
       ]},
-      "metadata": {"skill": "multiturn_carry_category", "difficulty": "hard", "what_it_tests": "Carry category giải trí qua các lượt."}
+      "metadata": {"skill": "multiturn_carry_period", "difficulty": "hard", "what_it_tests": "Carry period this_month qua các lượt với tools khác nhau."}
     },
     {
       "id": "M05_correct_category", "phase": "B", "suite": "base",
@@ -204,30 +204,30 @@
         {"role": "user", "content": "Lưu với category đã sửa."}
       ],
       "failure_type": "wrong_arg_value",
-      "expect": {"tool_calls": [{"name": "add_transaction", "args": {"type": "expense", "category": "entertainment", "amount": 220000}}]},
+      "expect": {"tool_calls": [{"name": "record_transaction", "args": {"type": "expense", "category": "entertainment", "amount": 220000, "note": "xem phim", "confirmed": false}}]},
       "metadata": {"skill": "multiturn_category_correction", "difficulty": "medium", "what_it_tests": "Category được sửa ở lượt sau."}
     },
     {
       "id": "M06_switch_tool", "phase": "B", "suite": "base",
       "turns": [
         {"role": "user", "content": "Chi tiêu ăn uống hôm nay là bao nhiêu?"},
-        {"role": "user", "content": "Thôi không cần xem chi tiêu nữa, cho tôi danh sách các danh mục."},
-        {"role": "user", "content": "Chỉ cần danh sách category thôi."}
+        {"role": "user", "content": "Thôi không cần xem chi tiêu nữa, tư vấn cho tôi về quy tắc 50/30/20."},
+        {"role": "user", "content": "Chỉ cần thông tin quy tắc đó thôi."}
       ],
       "failure_type": "wrong_tool",
-      "expect": {"tool_calls": [{"name": "list_categories", "args": {}}]},
-      "metadata": {"skill": "multiturn_switch_tool", "difficulty": "hard", "what_it_tests": "Intent mới thay query bằng list_categories."}
+      "expect": {"tool_calls": [{"name": "search_financial_advice", "args": {"topic": "50/30/20"}}]},
+      "metadata": {"skill": "multiturn_switch_tool", "difficulty": "hard", "what_it_tests": "Intent mới thay get_category_breakdown bằng search_financial_advice."}
     },
     {
       "id": "M07_cancel_previous_action", "phase": "B", "suite": "base",
       "turns": [
-        {"role": "user", "content": "Xóa giao dịch TXN-20260915-002."},
-        {"role": "user", "content": "Dừng lại, không xóa gì cả."},
+        {"role": "user", "content": "Ghi chi tiêu 100000 đồng mua sắm."},
+        {"role": "user", "content": "Dừng lại, không ghi gì cả."},
         {"role": "user", "content": "Chỉ nói bạn đã hiểu yêu cầu hủy."}
       ],
       "failure_type": "unnecessary_tool",
       "expect": {"no_tool": true, "behavior": "answer_without_tool"},
-      "metadata": {"skill": "multiturn_cancel", "difficulty": "hard", "what_it_tests": "Latest cancellation phải thắng delete request cũ."}
+      "metadata": {"skill": "multiturn_cancel", "difficulty": "hard", "what_it_tests": "Latest cancellation phải thắng record request cũ."}
     },
     {
       "id": "M08_clarify_then_parallel", "phase": "B", "suite": "base",
@@ -238,10 +238,10 @@
       ],
       "failure_type": "wrong_tool",
       "expect": {"tool_calls": [
-        {"name": "query_transactions", "args": {"category": "food", "date_range": "this_month"}},
-        {"name": "query_transactions", "args": {"category": "transport", "date_range": "this_month"}}
+        {"name": "get_category_breakdown", "args": {"period": "this_month", "category": "food"}},
+        {"name": "get_category_breakdown", "args": {"period": "this_month", "category": "transport"}}
       ]},
-      "metadata": {"skill": "multiturn_clarify_parallel", "difficulty": "hard", "what_it_tests": "Sau khi clarify gọi hai query_transactions song song."}
+      "metadata": {"skill": "multiturn_clarify_parallel", "difficulty": "hard", "what_it_tests": "Sau khi clarify gọi hai get_category_breakdown song song."}
     },
     {
       "id": "M09_confirmation_invalidated", "phase": "B", "suite": "base",
@@ -251,19 +251,19 @@
         {"role": "user", "content": "Hỏi lại xác nhận trước khi lưu."}
       ],
       "failure_type": "wrong_boundary",
-      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "yes_no"}}]},
-      "metadata": {"skill": "confirmation_payload_change", "difficulty": "hard", "what_it_tests": "Số tiền thay đổi phải hỏi xác nhận lại."}
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"question": "Bạn xác nhận ghi chi tiêu 150000 đồng cho shopping?", "response_type": "yes_no"}}]},
+      "metadata": {"skill": "confirmation_payload_change", "difficulty": "hard", "what_it_tests": "Số tiền thay đổi phải hỏi xác nhận lại bằng clarify."}
     },
     {
       "id": "M10_latest_intent_wins", "phase": "B", "suite": "base",
       "turns": [
         {"role": "user", "content": "Cho tôi xem chi tiêu ăn uống."},
         {"role": "user", "content": "Không cần xem chi tiêu nữa."},
-        {"role": "user", "content": "Chỉ kiểm tra ngân sách đi lại thôi."}
+        {"role": "user", "content": "Dự báo chi tiêu tháng tới có vỡ quỹ không."}
       ],
       "failure_type": "wrong_tool",
-      "expect": {"tool_calls": [{"name": "check_budget", "args": {"category": "transport"}}]},
-      "metadata": {"skill": "latest_intent_replacement", "difficulty": "hard", "what_it_tests": "Không gọi stale query_transactions từ turn đầu."}
+      "expect": {"tool_calls": [{"name": "budget_forecast_alert", "args": {"month": "next_month"}}]},
+      "metadata": {"skill": "latest_intent_replacement", "difficulty": "hard", "what_it_tests": "Không gọi stale get_category_breakdown từ turn đầu, chuyển sang bonus tool."}
     }
   ]
 }
