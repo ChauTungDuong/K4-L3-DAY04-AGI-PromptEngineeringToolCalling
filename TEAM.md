@@ -39,10 +39,10 @@
 
 ### Nguyễn Đình Tuấn Anh — 2A202602735
 
-- Phần việc và file/commit/PR:
-- Quyết định, khó khăn và cách xử lý:
-- Điều đã học:
-- AI/công cụ đã dùng và cách kiểm tra:
+- Phần việc và file/commit/PR: Phụ trách thiết kế system prompt cho trợ lý quản lý tài chính; cập nhật `starter_v0/artifacts/system_prompt.md` trong commit `fc8ff3b` trên branch `tuananh`.
+- Quyết định, khó khăn và cách xử lý: Chuyển prompt từ starter IT Helpdesk sang tài chính cá nhân; bổ sung suy luận danh mục từ mô tả giao dịch, tính ngân sách và dòng tiền, quy tắc 50/30/20, hỏi lại khi dữ liệu mơ hồ và rào chắn chống lộ thông tin tài chính. Finance tool/eval runner chưa được tích hợp nên chưa ghi metric giả vào version log.
+- Điều đã học: Prompt cần phân biệt dữ liệu quan sát, phép tính và giả định; category chỉ được suy luận khi có bằng chứng rõ; các hành động thay đổi hoặc lưu dữ liệu phải có xác nhận.
+- AI/công cụ đã dùng và cách kiểm tra: Dùng VS Code/Copilot để rà tài liệu và chỉnh prompt; kiểm tra các section bắt buộc, `git diff --check`, preflight Gemini thành công và chạy baseline v0. Baseline bị 429 quota ở 21/30 case nên chưa dùng làm evidence hợp lệ.
 - Thời điểm đã tự nộp URL repo chung trên VLearn:
 
 ### Đào Duy Hiếu — 2A202602651
