@@ -5,97 +5,100 @@
   "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
   "cases": [
     {
-      "id": "G01_query_last_week", "phase": "B", "suite": "group",
+      "id": "G01_summary_last_week", "phase": "B", "suite": "group",
       "query": "Tuần trước tôi chi tiêu tổng cộng bao nhiêu?",
       "failure_type": "wrong_tool",
-      "expect": {"tool_calls": [{"name": "query_transactions", "args": {"date_range": "last_week"}}]},
-      "metadata": {"skill": "route_last_week", "difficulty": "easy", "what_it_tests": "Tuần trước phải map sang last_week."}
+      "expect": {"tool_calls": [{"name": "get_summary", "args": {"period": "last_week"}}]},
+      "metadata": {"skill": "route_last_week", "difficulty": "easy", "what_it_tests": "Tuần trước phải map sang last_week trong get_summary."}
     },
     {
-      "id": "G02_add_expense_complete", "phase": "B", "suite": "group",
-      "query": "Ghi nhận chi tiêu mua áo 650000 đồng hôm nay, thanh toán ví điện tử, ghi chú mua áo Uniqlo.",
+      "id": "G02_record_expense_complete", "phase": "B", "suite": "group",
+      "query": "Xác nhận ghi chi tiêu mua áo 650000 đồng hôm nay, ghi chú mua áo Uniqlo.",
       "failure_type": "wrong_tool",
-      "expect": {"tool_calls": [{"name": "add_transaction", "args": {"type": "expense", "category": "shopping", "amount": 650000, "payment_method": "e-wallet", "note": "mua áo Uniqlo"}}]},
-      "metadata": {"skill": "route_add_complete", "difficulty": "medium", "what_it_tests": "Đủ thông tin phải gọi add_transaction trực tiếp."}
+      "expect": {"tool_calls": [{"name": "record_transaction", "args": {"type": "expense", "category": "shopping", "amount": 650000, "note": "mua áo Uniqlo", "confirmed": true}}]},
+      "metadata": {"skill": "route_record_complete", "difficulty": "medium", "what_it_tests": "Đủ thông tin và có 'xác nhận' phải gọi record_transaction với confirmed=true."}
     },
     {
-      "id": "G03_check_all_budgets", "phase": "B", "suite": "group",
-      "query": "Cho tôi xem tất cả các ngân sách đã đặt.",
+      "id": "G03_category_breakdown_housing", "phase": "B", "suite": "group",
+      "query": "Chi tiết chi tiêu nhà ở và tiện ích tháng này.",
       "failure_type": "wrong_tool",
-      "expect": {"tool_calls": [{"name": "list_budgets", "args": {}}]},
-      "metadata": {"skill": "route_list_budgets", "difficulty": "easy", "what_it_tests": "Liệt kê tất cả ngân sách phải dùng list_budgets."}
+      "expect": {"tool_calls": [{"name": "get_category_breakdown", "args": {"period": "this_month", "category": "housing"}}]},
+      "metadata": {"skill": "route_breakdown_housing", "difficulty": "easy", "what_it_tests": "Chi tiết category housing phải dùng get_category_breakdown."}
     },
     {
-      "id": "G04_query_cash_only", "phase": "B", "suite": "group",
-      "query": "Tôi đã tiêu bao nhiêu tiền mặt tháng này?",
+      "id": "G04_forecast_bonus", "phase": "B", "suite": "group",
+      "query": "Dự báo tháng tới tôi có nguy cơ vỡ quỹ không?",
       "failure_type": "wrong_tool",
-      "expect": {"tool_calls": [{"name": "query_transactions", "args": {"payment_method": "cash", "date_range": "this_month"}}]},
-      "metadata": {"skill": "query_cash_payment", "difficulty": "medium", "what_it_tests": "Lọc theo phương thức thanh toán tiền mặt."}
+      "expect": {"tool_calls": [{"name": "budget_forecast_alert", "args": {"month": "next_month"}}]},
+      "metadata": {"skill": "route_bonus_forecast", "difficulty": "hard", "what_it_tests": "Bonus tool - dự báo và cảnh báo vỡ quỹ."}
     },
     {
-      "id": "G05_export_report", "phase": "B", "suite": "group",
-      "query": "Xuất báo cáo chi tiêu tháng này ra file Excel.",
+      "id": "G05_advice_5030", "phase": "B", "suite": "group",
+      "query": "Quy tắc 50/30/20 là gì và tôi nên áp dụng thế nào?",
       "failure_type": "wrong_tool",
-      "expect": {"tool_calls": [{"name": "export_report", "args": {"format": "excel", "date_range": "this_month"}}]},
-      "metadata": {"skill": "route_export", "difficulty": "medium", "what_it_tests": "Xuất báo cáo phải dùng export_report."}
+      "expect": {"tool_calls": [{"name": "search_financial_advice", "args": {"topic": "50/30/20"}}]},
+      "metadata": {"skill": "route_advice_5030", "difficulty": "medium", "what_it_tests": "Tra cứu quy tắc tài chính phải dùng search_financial_advice."}
     },
     {
-      "id": "GM01_add_with_clarify_payment", "phase": "B", "suite": "group",
+      "id": "GM01_record_with_clarify_note", "phase": "B", "suite": "group",
       "turns": [
-        {"role": "user", "content": "Thêm chi tiêu 320000 đồng ăn lẩu tối nay."},
-        {"role": "user", "content": "Thanh toán bằng thẻ tín dụng."},
-        {"role": "user", "content": "Ghi chú ăn với bạn bè, lưu lại."}
+        {"role": "user", "content": "Ghi chi tiêu 320000 đồng ăn lẩu tối nay."},
+        {"role": "user", "content": "Ghi chú ăn với bạn bè."},
+        {"role": "user", "content": "Xác nhận và lưu lại."}
       ],
       "failure_type": "missing_info",
-      "expect": {"tool_calls": [{"name": "add_transaction", "args": {"type": "expense", "category": "food", "amount": 320000, "payment_method": "credit_card", "note": "ăn với bạn bè"}}]},
-      "metadata": {"skill": "multiturn_fill_payment", "difficulty": "hard", "what_it_tests": "Carry amount rồi điền payment và note từ các lượt sau."}
+      "expect": {"tool_calls": [{"name": "record_transaction", "args": {"type": "expense", "category": "food", "amount": 320000, "note": "ăn với bạn bè", "confirmed": true}}]},
+      "metadata": {"skill": "multiturn_fill_note", "difficulty": "hard", "what_it_tests": "Carry amount rồi điền note và confirmed từ các lượt sau."}
     },
     {
-      "id": "GM02_correct_date", "phase": "B", "suite": "group",
+      "id": "GM02_correct_period", "phase": "B", "suite": "group",
       "turns": [
-        {"role": "user", "content": "Chi tiêu ngày 12 tháng 9 là bao nhiêu?"},
-        {"role": "user", "content": "À không, ngày 13 tháng 9."},
-        {"role": "user", "content": "Cho tôi xem với ngày đã sửa."}
+        {"role": "user", "content": "Tổng chi tiêu tuần này là bao nhiêu?"},
+        {"role": "user", "content": "À không, tuần trước mới đúng."},
+        {"role": "user", "content": "Cho tôi xem với khoảng thời gian đã sửa."}
       ],
       "failure_type": "wrong_arg_value",
-      "expect": {"tool_calls": [{"name": "query_transactions", "args": {"date": "2026-09-13"}}]},
-      "metadata": {"skill": "multiturn_date_correction", "difficulty": "hard", "what_it_tests": "Ngày được sửa ở lượt sau phải được áp dụng."}
+      "expect": {"tool_calls": [{"name": "get_summary", "args": {"period": "last_week"}}]},
+      "metadata": {"skill": "multiturn_period_correction", "difficulty": "hard", "what_it_tests": "Period được sửa ở lượt sau phải được áp dụng."}
     },
     {
-      "id": "GM03_set_budget_confirm", "phase": "B", "suite": "group",
+      "id": "GM03_advice_then_breakdown", "phase": "B", "suite": "group",
       "turns": [
-        {"role": "user", "content": "Đặt ngân sách đi lại là 2 triệu đồng tháng này."},
-        {"role": "user", "content": "Đổi thành 2.5 triệu đồng."},
-        {"role": "user", "content": "Xác nhận và lưu ngân sách mới."}
-      ],
-      "failure_type": "wrong_arg_value",
-      "expect": {"tool_calls": [{"name": "set_budget", "args": {"category": "transport", "amount": 2500000, "period": "monthly"}}]},
-      "metadata": {"skill": "multiturn_budget_correction", "difficulty": "hard", "what_it_tests": "Số tiền ngân sách sửa sau phải được dùng."}
-    },
-    {
-      "id": "GM04_query_multiple_methods", "phase": "B", "suite": "group",
-      "turns": [
-        {"role": "user", "content": "Chi tiêu tuần này bằng ví điện tử là bao nhiêu?"},
-        {"role": "user", "content": "Còn bằng thẻ tín dụng thì sao?"},
-        {"role": "user", "content": "So sánh cả hai phương thức."}
+        {"role": "user", "content": "Quỹ khẩn cấp là gì?"},
+        {"role": "user", "content": "Chi tiêu của tôi tháng này thế nào?"},
+        {"role": "user", "content": "Cho tôi xem cả hai thông tin."}
       ],
       "failure_type": "wrong_tool",
       "expect": {"tool_calls": [
-        {"name": "query_transactions", "args": {"payment_method": "e-wallet", "date_range": "this_week"}},
-        {"name": "query_transactions", "args": {"payment_method": "credit_card", "date_range": "this_week"}}
+        {"name": "search_financial_advice", "args": {"topic": "quỹ khẩn cấp"}},
+        {"name": "get_summary", "args": {"period": "this_month"}}
       ]},
-      "metadata": {"skill": "multiturn_payment_comparison", "difficulty": "hard", "what_it_tests": "Carry date_range và gọi hai query với payment_method khác nhau."}
+      "metadata": {"skill": "multiturn_advice_summary", "difficulty": "hard", "what_it_tests": "Gọi song song advice và summary tools."}
     },
     {
-      "id": "GM05_delete_confirm", "phase": "B", "suite": "group",
+      "id": "GM04_compare_two_periods", "phase": "B", "suite": "group",
       "turns": [
-        {"role": "user", "content": "Xóa giao dịch TXN-20260915-003."},
-        {"role": "user", "content": "Tôi chắc chắn muốn xóa."},
-        {"role": "user", "content": "Thực hiện xóa ngay."}
+        {"role": "user", "content": "Chi tiêu ăn uống tuần này là bao nhiêu?"},
+        {"role": "user", "content": "Còn tuần trước thì sao?"},
+        {"role": "user", "content": "So sánh hai tuần."}
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [
+        {"name": "get_category_breakdown", "args": {"period": "this_week", "category": "food"}},
+        {"name": "get_category_breakdown", "args": {"period": "last_week", "category": "food"}}
+      ]},
+      "metadata": {"skill": "multiturn_period_comparison", "difficulty": "hard", "what_it_tests": "Carry category và gọi hai breakdown với period khác nhau."}
+    },
+    {
+      "id": "GM05_record_confirm", "phase": "B", "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Ghi chi tiêu 90000 đồng xăng xe hôm nay."},
+        {"role": "user", "content": "Tôi xác nhận muốn lưu."},
+        {"role": "user", "content": "Thực hiện ghi ngay."}
       ],
       "failure_type": "wrong_boundary",
-      "expect": {"tool_calls": [{"name": "delete_transaction", "args": {"transaction_id": "TXN-20260915-003"}}]},
-      "metadata": {"skill": "multiturn_delete_confirm", "difficulty": "hard", "what_it_tests": "Sau khi xác nhận mới gọi delete_transaction."}
+      "expect": {"tool_calls": [{"name": "record_transaction", "args": {"type": "expense", "category": "transport", "amount": 90000, "note": "xăng xe", "confirmed": true}}]},
+      "metadata": {"skill": "multiturn_record_confirm", "difficulty": "hard", "what_it_tests": "Sau khi xác nhận mới gọi record_transaction với confirmed=true."}
     }
   ]
 }
