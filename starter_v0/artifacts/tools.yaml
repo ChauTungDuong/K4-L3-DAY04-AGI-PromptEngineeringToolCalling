@@ -1,58 +1,60 @@
-# Finance assistant tool contract. Keep names and parameter shapes stable.
 tools:
-  - name: clarify
-    description: "Hỏi lại thông tin còn thiếu hoặc xin xác nhận trước một hành động có tác động dữ liệu."
-    parameters:
-      type: object
-      properties:
-        question: {type: string, description: "Một câu hỏi ngắn, cụ thể bằng tiếng Việt"}
-        response_type: {type: string, enum: [yes_no, free_text], description: "Kiểu phản hồi mong đợi"}
-        missing_fields: {type: array, items: {type: string}, description: "Các trường còn thiếu hoặc cần xác nhận"}
-      required: [question, response_type, missing_fields]
-
   - name: get_summary
-    description: "Xem tổng thu nhập, tổng chi tiêu, dòng tiền ròng và tỷ lệ tiết kiệm trong một khoảng thời gian. Chỉ đọc dữ liệu giả lập cục bộ."
+    description: "Xem tổng thu, chi và số dư bằng VND. Dùng period=today, this_week, this_month; hoặc truyền cả start_date và end_date theo YYYY-MM-DD."
     parameters:
       type: object
       properties:
-        period: {type: string, enum: [today, this_week, this_month], description: "Khoảng thời gian định sẵn"}
-        start_date: {type: string, description: "Ngày bắt đầu YYYY-MM-DD khi cần chỉ rõ khoảng thời gian"}
-        end_date: {type: string, description: "Ngày kết thúc YYYY-MM-DD khi cần chỉ rõ khoảng thời gian"}
+        period: {type: string, enum: [today, this_week, this_month, custom]}
+        start_date: {type: string, default: "", description: "Ngày đầu kỳ YYYY-MM-DD; dùng cùng end_date."}
+        end_date: {type: string, default: "", description: "Ngày cuối kỳ YYYY-MM-DD; dùng cùng start_date."}
       required: [period]
 
   - name: get_category_breakdown
-    description: "Xem chi tiết chi tiêu theo một danh mục trong khoảng thời gian. Chỉ đọc dữ liệu giả lập cục bộ."
+    description: "Xem tổng tiền và các giao dịch trong một danh mục của ngày, tuần hoặc tháng hiện tại."
     parameters:
       type: object
       properties:
-        period: {type: string, enum: [today, this_week, this_month], description: "Khoảng thời gian định sẵn"}
-        category: {type: string, enum: [food, transport, shopping, housing, entertainment, other], description: "Danh mục chi tiêu"}
+        period: {type: string, enum: [today, this_week, this_month]}
+        category: {type: string, enum: [food, transport, housing, shopping, entertainment, other, salary, other_income]}
       required: [period, category]
 
   - name: record_transaction
-    description: "Ghi một giao dịch thu hoặc chi vào dữ liệu cục bộ. Chỉ gọi sau khi đã gọi clarify để xác nhận đầy đủ thông tin và người dùng xác nhận rõ ràng."
+    description: "Ghi một khoản thu hoặc chi bằng VND. Luôn gọi confirmed=false để xem trước; chỉ gọi lại confirmed=true sau khi người dùng xác nhận."
     parameters:
       type: object
       properties:
-        type: {type: string, enum: [expense, income], description: "Loại giao dịch"}
-        amount: {type: number, minimum: 0.01, description: "Số tiền dương, đơn vị VND"}
-        category: {type: string, enum: [food, transport, shopping, housing, entertainment, other, salary, other_income], description: "Danh mục giao dịch"}
-        note: {type: string, description: "Mô tả giao dịch, không chứa thông tin bí mật"}
-        confirmed: {type: boolean, description: "Người dùng đã xác nhận ghi giao dịch"}
-      required: [type, amount, category, note, confirmed]
+        type: {type: string, enum: [expense, income]}
+        amount: {type: integer, minimum: 1, description: "Số tiền nguyên theo VND."}
+        category: {type: string, enum: [food, transport, housing, shopping, entertainment, other, salary, other_income]}
+        note: {type: string, default: ""}
+        confirmed: {type: boolean, default: false}
+      required: [type, amount, category, confirmed]
+
+  - name: clarify
+    description: "Hỏi lại đúng một câu khi thiếu dữ liệu hoặc cần người dùng xác nhận thao tác ghi."
+    parameters:
+      type: object
+      properties:
+        question: {type: string}
+        response_type: {type: string, enum: [yes_no, free_text]}
+        missing_fields:
+          type: array
+          items: {type: string}
+          default: []
+      required: [question, response_type, missing_fields]
 
   - name: search_financial_advice
-    description: "Tra cứu kiến thức tài chính nội bộ về quy tắc 50/30/20 và quỹ dự phòng. Không thay thế tư vấn tài chính chuyên nghiệp."
+    description: "Tra cứu kiến thức tài chính cơ bản như quy tắc 50/30/20 hoặc quỹ khẩn cấp."
     parameters:
       type: object
       properties:
-        topic: {type: string, enum: [50_30_20, emergency_fund], description: "Chủ đề cần tra cứu"}
+        topic: {type: string}
       required: [topic]
 
   - name: budget_forecast_alert
-    description: "Dự báo tốc độ chi tiêu trong tháng và cảnh báo nguy cơ vượt ngân sách hoặc không đạt mục tiêu tiết kiệm. Chỉ đọc dữ liệu cục bộ."
+    description: "Dự báo tổng chi cuối tháng và cảnh báo danh mục có nguy cơ vượt ngân sách."
     parameters:
       type: object
       properties:
-        month: {type: string, description: "Tháng cần dự báo YYYY-MM"}
+        month: {type: string, pattern: "^\\d{4}-(0[1-9]|1[0-2])$", description: "Tháng theo YYYY-MM."}
       required: [month]
