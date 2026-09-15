@@ -12,7 +12,7 @@
 
 - Team: AGI
 - Thành viên và INDIVIDUAL: [TEAM.md](../../TEAM.md)
-- Members: Châu Tùng Dương, Nguyễn Đình Tuấn Anh, Đào Duy Hiếu, Đỗ Mạnh Nghĩa, Nguyễn Ngọc Tuyền
+- Members: Châu Tùng Dương (2A202602822), Nguyễn Đình Tuấn Anh (2A202602735), Đào Duy Hiếu (2A202602651), Đỗ Mạnh Nghĩa (2A202602971), Nguyễn Ngọc Tuyền (2A202603010)
 - Provider/model: OpenRouter / Qwen 4B/7B
 
 # PHẦN A — Giới thiệu agent
