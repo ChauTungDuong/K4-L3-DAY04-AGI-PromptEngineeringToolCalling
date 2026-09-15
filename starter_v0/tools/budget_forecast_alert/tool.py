@@ -9,6 +9,11 @@ from tools._shared import error, read_data
 
 def budget_forecast_alert(month: str) -> dict[str, Any]:
     try:
+        if month == "next_month":
+            today = date.today()
+            next_month = today.month + 1
+            year = today.year + (next_month // 13)
+            month = f"{year:04d}-{((next_month - 1) % 12) + 1:02d}"
         year, month_number = map(int, month.split("-"))
         if not 1 <= month_number <= 12 or month != f"{year:04d}-{month_number:02d}":
             raise ValueError("month phải có định dạng YYYY-MM")

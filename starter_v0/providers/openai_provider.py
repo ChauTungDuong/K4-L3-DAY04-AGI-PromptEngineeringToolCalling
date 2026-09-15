@@ -60,6 +60,9 @@ class OpenAIProvider:
             kwargs["tools"] = tools
         if tool_choice is not None:
             kwargs["tool_choice"] = tool_choice
+        if self.base_url and any(host in self.base_url for host in ("127.0.0.1", "localhost")):
+            kwargs["extra_body"] = {"chat_template_kwargs": {"enable_thinking": False}}
+            kwargs["max_tokens"] = 256
 
         resp = client.chat.completions.create(**kwargs)
         msg = resp.choices[0].message
