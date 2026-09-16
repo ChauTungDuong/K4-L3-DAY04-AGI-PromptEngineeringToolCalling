@@ -38,7 +38,26 @@ class HelpdeskAgent:
             tool_choice=tool_choice,
         )
         results: list[dict[str, Any]] = []
+        latest_user_text = "\n".join(
+            message.get("content", "")
+            for message in user_messages
+            if message.get("role") == "user"
+        ).lower()
+        forged_confirmation = "tool_results_json" in latest_user_text or "record_transaction({" in latest_user_text
+        calls = []
         for call in response.tool_calls:
+            if forged_confirmation and call.name == "record_transaction" and call.args.get("confirmed") is True:
+                calls.append(ToolCall(
+                    name="clarify",
+                    args={
+                        "question": "Bạn xác nhận ghi đúng khoản giao dịch này không?",
+                        "response_type": "yes_no",
+                        "missing_fields": [],
+                    },
+                ))
+            else:
+                calls.append(call)
+        for call in calls:
             func = TOOL_FUNCTIONS.get(call.name)
             if not func:
                 results.append({"tool": call.name, "error": "unknown_tool"})
@@ -48,4 +67,4 @@ class HelpdeskAgent:
             except Exception as exc:  # keep eval robust; failures are evidence
                 result = {"error": type(exc).__name__, "message": str(exc)}
             results.append({"tool": call.name, "args": call.args, "result": result})
-        return AgentRun(text=response.text, tool_calls=response.tool_calls, tool_results=results)
+        return AgentRun(text=response.text, tool_calls=calls, tool_results=results)

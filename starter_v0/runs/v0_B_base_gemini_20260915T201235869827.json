@@ -1,0 +1,1749 @@
+{
+  "run_id": "v0_B_base_gemini_20260915T201235869827",
+  "version": "v0",
+  "artifact_version": "v0+p0c0e80df5a39+t8f1981ca977d",
+  "prompt_hash": "0c0e80df5a39143af75fdc1320910d15736e9998e637562affab3594f605e19f",
+  "tools_hash": "8f1981ca977d5248dfa8556239a04b7369658f51a3e1690d6ee95daa84ab6c3a",
+  "phase": "B",
+  "suite": "base",
+  "provider": "gemini",
+  "model": "gemini-3.5-flash",
+  "system_prompt": "/home/tuananh/vinuni/159/K4-L3-DAY04-ChauTungDuong-2A202602822-PromptEngineeringToolCalling/starter_v0/artifacts/system_prompt.md",
+  "tools": "/home/tuananh/vinuni/159/K4-L3-DAY04-ChauTungDuong-2A202602822-PromptEngineeringToolCalling/starter_v0/artifacts/tools.yaml",
+  "eval_cases": "data/eval_finance_base.json",
+  "dataset_id": "day04_v3_finance_base",
+  "dataset_role": "base",
+  "description": "Core eval for the Personal Finance Assistant Agent. Test expense tracking, budget management, transaction queries, and category analysis with tool routing accuracy.",
+  "generated_at": "2026-09-15T20:12:35",
+  "summary": {
+    "total_cases": 30,
+    "measured_cases": 8,
+    "provider_error_cases": 22,
+    "passed_cases": 5,
+    "case_accuracy": 0.625,
+    "tool_routing_accuracy": 0.875,
+    "argument_accuracy": 0.625,
+    "multiturn_accuracy": null,
+    "failure_counts": {
+      "missing_info": 2,
+      "out_of_scope": 1
+    },
+    "observed_mismatch_counts": {
+      "wrong_arg_value": 2,
+      "unexpected_tool_call": 1
+    }
+  },
+  "results": [
+    {
+      "id": "F01_query_today_spending",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "route_summary",
+        "difficulty": "easy",
+        "what_it_tests": "Hỏi tổng chi tiêu theo ngày phải dùng get_summary với period."
+      },
+      "input": "Hôm nay tôi chi tiêu bao nhiêu tiền?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "get_summary",
+            "args": {
+              "period": "today"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "get_summary",
+            "args": {
+              "period": "today"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "get_summary",
+          "args": {
+            "period": "today"
+          },
+          "result": {
+            "tool": "get_summary",
+            "period": "today",
+            "start_date": "2026-09-15",
+            "end_date": "2026-09-15",
+            "income": 0,
+            "expense": 130000,
+            "balance": -130000,
+            "transaction_count": 3,
+            "currency": "VND"
+          }
+        }
+      ]
+    },
+    {
+      "id": "F02_query_week_spending",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "route_week_summary",
+        "difficulty": "easy",
+        "what_it_tests": "Tuần này phải map sang this_week trong get_summary."
+      },
+      "input": "Chi tiêu của tôi trong tuần này như thế nào?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "get_summary",
+            "args": {
+              "period": "this_week"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "get_summary",
+            "args": {
+              "period": "this_week"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "get_summary",
+          "args": {
+            "period": "this_week"
+          },
+          "result": {
+            "tool": "get_summary",
+            "period": "this_week",
+            "start_date": "2026-09-14",
+            "end_date": "2026-09-15",
+            "income": 0,
+            "expense": 290000,
+            "balance": -290000,
+            "transaction_count": 6,
+            "currency": "VND"
+          }
+        }
+      ]
+    },
+    {
+      "id": "F03_category_food",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "route_category_breakdown",
+        "difficulty": "medium",
+        "what_it_tests": "Chi tiết theo danh mục phải dùng get_category_breakdown."
+      },
+      "input": "Cho tôi xem chi tiết chi tiêu ăn uống tháng này.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "get_category_breakdown",
+            "args": {
+              "period": "this_month",
+              "category": "food"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "get_category_breakdown",
+            "args": {
+              "category": "food",
+              "period": "this_month"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "get_category_breakdown",
+          "args": {
+            "category": "food",
+            "period": "this_month"
+          },
+          "result": {
+            "tool": "get_category_breakdown",
+            "period": "this_month",
+            "start_date": "2026-09-01",
+            "end_date": "2026-09-15",
+            "category": "food",
+            "category_name": "Ăn uống",
+            "total_amount": 765000,
+            "transaction_count": 11,
+            "currency": "VND",
+            "transactions": [
+              {
+                "id": "TXN-20260903-001",
+                "date": "2026-09-03",
+                "time": "07:30",
+                "type": "expense",
+                "category": "food",
+                "amount": 40000,
+                "currency": "VND",
+                "payment_method": "cash",
+                "note": "Bánh mì pate trứng và sữa đậu nành"
+              },
+              {
+                "id": "TXN-20260903-002",
+                "date": "2026-09-03",
+                "time": "12:15",
+                "type": "expense",
+                "category": "food",
+                "amount": 55000,
+                "currency": "VND",
+                "payment_method": "e-wallet",
+                "note": "Cơm trưa văn phòng sườn nướng"
+              },
+              {
+                "id": "TXN-20260908-001",
+                "date": "2026-09-08",
+                "time": "08:00",
+                "type": "expense",
+                "category": "food",
+                "amount": 35000,
+                "currency": "VND",
+                "payment_method": "cash",
+                "note": "Bún chả sáng gần công ty"
+              },
+              {
+                "id": "TXN-20260908-002",
+                "date": "2026-09-08",
+                "time": "14:30",
+                "type": "expense",
+                "category": "food",
+                "amount": 45000,
+                "currency": "VND",
+                "payment_method": "e-wallet",
+                "note": "Trà đào Highland Coffee với team"
+              },
+              {
+                "id": "TXN-20260910-002",
+                "date": "2026-09-10",
+                "time": "12:00",
+                "type": "expense",
+                "category": "food",
+                "amount": 60000,
+                "currency": "VND",
+                "payment_method": "cash",
+                "note": "Phở bò tái nạm trưa"
+              },
+              {
+                "id": "TXN-20260912-001",
+                "date": "2026-09-12",
+                "time": "11:30",
+                "type": "expense",
+                "category": "food",
+                "amount": 320000,
+                "currency": "VND",
+                "payment_method": "credit_card",
+                "note": "Ăn trưa lẩu nướng cuối tuần cùng bạn bè"
+              },
+              {
+                "id": "TXN-20260914-001",
+                "date": "2026-09-14",
+                "time": "07:45",
+                "type": "expense",
+                "category": "food",
+                "amount": 30000,
+                "currency": "VND",
+                "payment_method": "cash",
+                "note": "Xôi xéo chả sáng"
+              },
+              {
+                "id": "TXN-20260914-002",
+                "date": "2026-09-14",
+                "time": "12:20",
+                "type": "expense",
+                "category": "food",
+                "amount": 50000,
+                "currency": "VND",
+                "payment_method": "e-wallet",
+                "note": "Cơm gà xối mỡ trưa"
+              },
+              {
+                "id": "TXN-20260915-001",
+                "date": "2026-09-15",
+                "time": "07:30",
+                "type": "expense",
+                "category": "food",
+                "amount": 40000,
+                "currency": "VND",
+                "payment_method": "cash",
+                "note": "Bún bò Huế ăn sáng"
+              },
+              {
+                "id": "TXN-20260915-002",
+                "date": "2026-09-15",
+                "time": "09:15",
+                "type": "expense",
+                "category": "food",
+                "amount": 35000,
+                "currency": "VND",
+                "payment_method": "e-wallet",
+                "note": "Cà phê sữa đá mang đi"
+              },
+              {
+                "id": "TXN-20260915-003",
+                "date": "2026-09-15",
+                "time": "12:15",
+                "type": "expense",
+                "category": "food",
+                "amount": 55000,
+                "currency": "VND",
+                "payment_method": "e-wallet",
+                "note": "Cơm tấm sườn bì chả trưa"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "F04_add_expense_missing_amount",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "clarify_amount",
+        "difficulty": "medium",
+        "what_it_tests": "Thiếu số tiền phải hỏi lại bằng clarify, không đoán."
+      },
+      "input": "Thêm chi tiêu ăn sáng hôm nay, mua bánh mì.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "question": "Bạn chi bao nhiêu tiền?",
+              "response_type": "free_text",
+              "missing_fields": [
+                "amount"
+              ]
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "routing_correct": true,
+        "args_correct": false,
+        "actual_tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "missing_fields": [
+                "amount"
+              ],
+              "question": "Bạn đã chi bao nhiêu tiền cho ổ bánh mì ăn sáng hôm nay thế?",
+              "response_type": "free_text"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": "wrong_arg_value",
+        "failure_type": "missing_info",
+        "failures": [
+          "question: expected 'Bạn chi bao nhiêu tiền?', got 'Bạn đã chi bao nhiêu tiền cho ổ bánh mì ăn sáng hôm nay thế?'"
+        ]
+      },
+      "tool_results": [
+        {
+          "tool": "clarify",
+          "args": {
+            "missing_fields": [
+              "amount"
+            ],
+            "question": "Bạn đã chi bao nhiêu tiền cho ổ bánh mì ăn sáng hôm nay thế?",
+            "response_type": "free_text"
+          },
+          "result": {
+            "tool": "clarify",
+            "question": "Bạn đã chi bao nhiêu tiền cho ổ bánh mì ăn sáng hôm nay thế?",
+            "response_type": "free_text",
+            "missing_fields": [
+              "amount"
+            ],
+            "awaiting_user": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "F05_out_of_scope_cooking",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "out_of_scope",
+        "difficulty": "easy",
+        "what_it_tests": "Yêu cầu ngoài quản lý tài chính không gọi tool."
+      },
+      "input": "Gợi ý cho tôi món ăn ngon hôm nay đi.",
+      "expect": {
+        "no_tool": true,
+        "behavior": "refuse"
+      },
+      "result": {
+        "passed": false,
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [
+          {
+            "name": "get_category_breakdown",
+            "args": {
+              "period": "this_month",
+              "category": "food"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "out_of_scope",
+        "observed_mismatch": "unexpected_tool_call",
+        "failure_type": "out_of_scope",
+        "failures": [
+          "expected no tool call"
+        ]
+      },
+      "tool_results": [
+        {
+          "tool": "get_category_breakdown",
+          "args": {
+            "period": "this_month",
+            "category": "food"
+          },
+          "result": {
+            "tool": "get_category_breakdown",
+            "period": "this_month",
+            "start_date": "2026-09-01",
+            "end_date": "2026-09-15",
+            "category": "food",
+            "category_name": "Ăn uống",
+            "total_amount": 765000,
+            "transaction_count": 11,
+            "currency": "VND",
+            "transactions": [
+              {
+                "id": "TXN-20260903-001",
+                "date": "2026-09-03",
+                "time": "07:30",
+                "type": "expense",
+                "category": "food",
+                "amount": 40000,
+                "currency": "VND",
+                "payment_method": "cash",
+                "note": "Bánh mì pate trứng và sữa đậu nành"
+              },
+              {
+                "id": "TXN-20260903-002",
+                "date": "2026-09-03",
+                "time": "12:15",
+                "type": "expense",
+                "category": "food",
+                "amount": 55000,
+                "currency": "VND",
+                "payment_method": "e-wallet",
+                "note": "Cơm trưa văn phòng sườn nướng"
+              },
+              {
+                "id": "TXN-20260908-001",
+                "date": "2026-09-08",
+                "time": "08:00",
+                "type": "expense",
+                "category": "food",
+                "amount": 35000,
+                "currency": "VND",
+                "payment_method": "cash",
+                "note": "Bún chả sáng gần công ty"
+              },
+              {
+                "id": "TXN-20260908-002",
+                "date": "2026-09-08",
+                "time": "14:30",
+                "type": "expense",
+                "category": "food",
+                "amount": 45000,
+                "currency": "VND",
+                "payment_method": "e-wallet",
+                "note": "Trà đào Highland Coffee với team"
+              },
+              {
+                "id": "TXN-20260910-002",
+                "date": "2026-09-10",
+                "time": "12:00",
+                "type": "expense",
+                "category": "food",
+                "amount": 60000,
+                "currency": "VND",
+                "payment_method": "cash",
+                "note": "Phở bò tái nạm trưa"
+              },
+              {
+                "id": "TXN-20260912-001",
+                "date": "2026-09-12",
+                "time": "11:30",
+                "type": "expense",
+                "category": "food",
+                "amount": 320000,
+                "currency": "VND",
+                "payment_method": "credit_card",
+                "note": "Ăn trưa lẩu nướng cuối tuần cùng bạn bè"
+              },
+              {
+                "id": "TXN-20260914-001",
+                "date": "2026-09-14",
+                "time": "07:45",
+                "type": "expense",
+                "category": "food",
+                "amount": 30000,
+                "currency": "VND",
+                "payment_method": "cash",
+                "note": "Xôi xéo chả sáng"
+              },
+              {
+                "id": "TXN-20260914-002",
+                "date": "2026-09-14",
+                "time": "12:20",
+                "type": "expense",
+                "category": "food",
+                "amount": 50000,
+                "currency": "VND",
+                "payment_method": "e-wallet",
+                "note": "Cơm gà xối mỡ trưa"
+              },
+              {
+                "id": "TXN-20260915-001",
+                "date": "2026-09-15",
+                "time": "07:30",
+                "type": "expense",
+                "category": "food",
+                "amount": 40000,
+                "currency": "VND",
+                "payment_method": "cash",
+                "note": "Bún bò Huế ăn sáng"
+              },
+              {
+                "id": "TXN-20260915-002",
+                "date": "2026-09-15",
+                "time": "09:15",
+                "type": "expense",
+                "category": "food",
+                "amount": 35000,
+                "currency": "VND",
+                "payment_method": "e-wallet",
+                "note": "Cà phê sữa đá mang đi"
+              },
+              {
+                "id": "TXN-20260915-003",
+                "date": "2026-09-15",
+                "time": "12:15",
+                "type": "expense",
+                "category": "food",
+                "amount": 55000,
+                "currency": "VND",
+                "payment_method": "e-wallet",
+                "note": "Cơm tấm sườn bì chả trưa"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "F06_out_of_scope_weather",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "out_of_scope_weather",
+        "difficulty": "easy",
+        "what_it_tests": "Thời tiết không liên quan finance agent."
+      },
+      "input": "Thời tiết hôm nay có mưa không?",
+      "expect": {
+        "no_tool": true,
+        "behavior": "refuse"
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "```json\n{\n  \"intent\": \"financial_guidance\",\n  \"action\": \"refuse\",\n  \"reply\": \"Tôi là trợ lý tài chính cá nhân nên không có thông tin về thời tiết hôm nay. Tôi có thể giúp bạn ghi chép chi tiêu, kiểm tra số dư hoặc lập kế hoạch ngân sách tài chính được không?\",\n  \"evidence_ids\": []\n}\n```",
+        "case_failure_type": "out_of_scope",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F07_category_breakdown_transport",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "category_breakdown_transport",
+        "difficulty": "medium",
+        "what_it_tests": "Xem chi tiết category phải dùng get_category_breakdown."
+      },
+      "input": "Chi tiêu đi lại tháng này chi tiết ra sao?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "get_category_breakdown",
+            "args": {
+              "period": "this_month",
+              "category": "transport"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-3.5-flash\\nPlease retry in 38.329950044s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '38s'}]}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F08_summary_month",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "summary_month",
+        "difficulty": "easy",
+        "what_it_tests": "Tổng thu chi phải dùng get_summary."
+      },
+      "input": "Tổng thu chi tháng này của tôi thế nào?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "get_summary",
+            "args": {
+              "period": "this_month"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "get_summary",
+            "args": {
+              "period": "this_month"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "get_summary",
+          "args": {
+            "period": "this_month"
+          },
+          "result": {
+            "tool": "get_summary",
+            "period": "this_month",
+            "start_date": "2026-09-01",
+            "end_date": "2026-09-15",
+            "income": 22850000,
+            "expense": 7200000,
+            "balance": 15650000,
+            "transaction_count": 25,
+            "currency": "VND"
+          }
+        }
+      ]
+    },
+    {
+      "id": "F09_financial_advice",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "route_advice",
+        "difficulty": "medium",
+        "what_it_tests": "Tra cứu kiến thức tài chính phải dùng search_financial_advice."
+      },
+      "input": "Quy tắc 50/30/20 là gì và áp dụng như thế nào?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "search_financial_advice",
+            "args": {
+              "topic": "50/30/20"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-3.5-flash\\nPlease retry in 36.144737956s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '36s'}]}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F10_meta_no_tool",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "meta_no_tool",
+        "difficulty": "easy",
+        "what_it_tests": "Câu hỏi khả năng không cần tool."
+      },
+      "input": "Bạn có thể giúp tôi những gì?",
+      "expect": {
+        "no_tool": true,
+        "behavior": "answer_without_tool"
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "unnecessary_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-3.5-flash\\nPlease retry in 35.765209265s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '35s'}]}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F11_record_income",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "route_record_income",
+        "difficulty": "medium",
+        "what_it_tests": "Thu nhập phải có type=income và confirmed=false trước khi lưu."
+      },
+      "input": "Ghi nhận thu nhập lương tháng này 20 triệu đồng.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "record_transaction",
+            "args": {
+              "type": "income",
+              "amount": 20000000,
+              "category": "salary",
+              "note": "Lương tháng này",
+              "confirmed": false
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-3.5-flash\\nPlease retry in 35.477907432s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '35s'}]}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F12_confirm_before_record",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "confirm_write",
+        "difficulty": "medium",
+        "what_it_tests": "Ghi dữ liệu là write action, phải xác nhận trước."
+      },
+      "input": "Lưu chi tiêu 80000 đồng xăng xe hôm nay.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "question": "Bạn xác nhận ghi chi tiêu 80000 đồng cho xăng xe?",
+              "response_type": "yes_no"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-3.5-flash\\nPlease retry in 35.10315779s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '35s'}]}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F13_parallel_summary_and_category",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "parallel_tools",
+        "difficulty": "hard",
+        "what_it_tests": "Một yêu cầu cần cả tổng và chi tiết category."
+      },
+      "input": "Cho tôi xem tổng chi tiêu tuần này và chi tiết chi tiêu ăn uống.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "get_summary",
+            "args": {
+              "period": "this_week"
+            }
+          },
+          {
+            "name": "get_category_breakdown",
+            "args": {
+              "period": "this_week",
+              "category": "food"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-3.5-flash\\nPlease retry in 34.723401684s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '34s'}]}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F14_missing_category",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "clarify_category",
+        "difficulty": "medium",
+        "what_it_tests": "Thiếu category phải hỏi lại bằng clarify."
+      },
+      "input": "Thêm chi tiêu 50000 đồng hôm nay.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "question": "Chi tiêu này thuộc danh mục nào?",
+              "response_type": "free_text",
+              "missing_fields": [
+                "category"
+              ]
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "routing_correct": true,
+        "args_correct": false,
+        "actual_tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "question": "Khoản chi tiêu 50.000đ hôm nay thuộc danh mục nào vậy bạn? (Ví dụ: ăn uống, di chuyển, mua sắm, giải trí, nhà cửa, hoặc khác)",
+              "response_type": "free_text",
+              "missing_fields": [
+                "category"
+              ]
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": "wrong_arg_value",
+        "failure_type": "missing_info",
+        "failures": [
+          "question: expected 'Chi tiêu này thuộc danh mục nào?', got 'Khoản chi tiêu 50.000đ hôm nay thuộc danh mục nào vậy bạn? (Ví dụ: ăn uống, di chuyển, mua sắm, giải trí, nhà cửa, hoặc khác)'"
+        ]
+      },
+      "tool_results": [
+        {
+          "tool": "clarify",
+          "args": {
+            "question": "Khoản chi tiêu 50.000đ hôm nay thuộc danh mục nào vậy bạn? (Ví dụ: ăn uống, di chuyển, mua sắm, giải trí, nhà cửa, hoặc khác)",
+            "response_type": "free_text",
+            "missing_fields": [
+              "category"
+            ]
+          },
+          "result": {
+            "tool": "clarify",
+            "question": "Khoản chi tiêu 50.000đ hôm nay thuộc danh mục nào vậy bạn? (Ví dụ: ăn uống, di chuyển, mua sắm, giải trí, nhà cửa, hoặc khác)",
+            "response_type": "free_text",
+            "missing_fields": [
+              "category"
+            ],
+            "awaiting_user": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "F15_summary_specific_date_range",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "specific_date_range",
+        "difficulty": "medium",
+        "what_it_tests": "Khoảng ngày cụ thể phải dùng start_date và end_date."
+      },
+      "input": "Tổng thu chi từ ngày 1 đến 10 tháng 9 là bao nhiêu?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "get_summary",
+            "args": {
+              "start_date": "2026-09-01",
+              "end_date": "2026-09-10"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-3.5-flash\\nPlease retry in 30.722071634s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '30s'}]}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F16_compare_two_categories",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "multiple_categories",
+        "difficulty": "hard",
+        "what_it_tests": "Không được gộp hai categories vào một argument, phải gọi riêng."
+      },
+      "input": "So sánh chi tiêu ăn uống và đi lại tháng này.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "get_category_breakdown",
+            "args": {
+              "period": "this_month",
+              "category": "food"
+            }
+          },
+          {
+            "name": "get_category_breakdown",
+            "args": {
+              "period": "this_month",
+              "category": "transport"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-3.5-flash\\nPlease retry in 30.2223427s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'model': 'gemini-3.5-flash', 'location': 'global'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '30s'}]}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F17_emergency_fund_advice",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "advice_emergency_fund",
+        "difficulty": "medium",
+        "what_it_tests": "Kiến thức tài chính phải dùng search_financial_advice."
+      },
+      "input": "Quỹ khẩn cấp là gì và nên dành bao nhiêu?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "search_financial_advice",
+            "args": {
+              "topic": "quỹ khẩn cấp"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-3.5-flash\\nPlease retry in 29.765358767s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '29s'}]}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F18_budget_forecast",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "route_bonus_forecast",
+        "difficulty": "hard",
+        "what_it_tests": "Bonus tool - dự báo và cảnh báo ngân sách."
+      },
+      "input": "Dự báo chi tiêu tháng tới và cảnh báo nếu có rủi ro vỡ quỹ.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "budget_forecast_alert",
+            "args": {
+              "month": "next_month"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-3.5-flash\\nPlease retry in 29.393476367s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'model': 'gemini-3.5-flash', 'location': 'global'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '29s'}]}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F19_category_breakdown_shopping",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "breakdown_shopping",
+        "difficulty": "easy",
+        "what_it_tests": "Chi tiết category shopping phải dùng get_category_breakdown."
+      },
+      "input": "Chi tiêu mua sắm tuần này có gì?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "get_category_breakdown",
+            "args": {
+              "period": "this_week",
+              "category": "shopping"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-3.5-flash\\nPlease retry in 29.017501342s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '29s'}]}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F20_record_expense_complete",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "record_confirmed",
+        "difficulty": "medium",
+        "what_it_tests": "Có 'xác nhận' phải gọi record với confirmed=true."
+      },
+      "input": "Xác nhận ghi chi tiêu 55000 đồng ăn trưa hôm nay, thanh toán ví điện tử.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "record_transaction",
+            "args": {
+              "type": "expense",
+              "amount": 55000,
+              "category": "food",
+              "note": "ăn trưa",
+              "confirmed": true
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-3.5-flash\\nPlease retry in 28.638257528s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '28s'}]}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "M01_record_expense_clarify_amount",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_fill_amount",
+        "difficulty": "hard",
+        "what_it_tests": "Carry category rồi điền amount, note và confirmed từ các lượt sau."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Thêm chi tiêu ăn trưa hôm nay."
+        },
+        {
+          "role": "user",
+          "content": "55000 đồng."
+        },
+        {
+          "role": "user",
+          "content": "Ghi chú là cơm tấm sườn, xác nhận lưu."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "record_transaction",
+            "args": {
+              "type": "expense",
+              "category": "food",
+              "amount": 55000,
+              "note": "cơm tấm sườn",
+              "confirmed": true
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "missing_info",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "ConnectError: [Errno 104] Connection reset by peer"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "M02_confirm_then_record",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_confirmation",
+        "difficulty": "hard",
+        "what_it_tests": "Sau khi xác nhận mới gọi record_transaction với confirmed=true."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Thêm chi tiêu 80000 đồng xăng xe hôm nay."
+        },
+        {
+          "role": "user",
+          "content": "Ghi chú đổ xăng Petrolimex."
+        },
+        {
+          "role": "user",
+          "content": "Xác nhận và lưu lại."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "record_transaction",
+            "args": {
+              "type": "expense",
+              "category": "transport",
+              "amount": 80000,
+              "note": "đổ xăng Petrolimex",
+              "confirmed": true
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-3.5-flash\\nPlease retry in 27.576862949s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '27s'}]}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "M03_correct_amount",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_correction",
+        "difficulty": "hard",
+        "what_it_tests": "Số tiền sửa sau phải thắng số tiền cũ."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Thêm chi tiêu ăn sáng 50000 đồng."
+        },
+        {
+          "role": "user",
+          "content": "À nhầm, là 40000 đồng."
+        },
+        {
+          "role": "user",
+          "content": "Lưu với số tiền đã sửa."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "record_transaction",
+            "args": {
+              "type": "expense",
+              "category": "food",
+              "amount": 40000,
+              "note": "ăn sáng",
+              "confirmed": false
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-3.5-flash\\nPlease retry in 27.212835631s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'model': 'gemini-3.5-flash', 'location': 'global'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '27s'}]}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "M04_category_then_summary",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_carry_period",
+        "difficulty": "hard",
+        "what_it_tests": "Carry period this_month qua các lượt với tools khác nhau."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Chi tiêu giải trí tháng này của tôi là bao nhiêu?"
+        },
+        {
+          "role": "user",
+          "content": "Cho tôi xem tổng thu chi tháng này."
+        },
+        {
+          "role": "user",
+          "content": "Hiển thị cả hai thông tin."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "get_category_breakdown",
+            "args": {
+              "period": "this_month",
+              "category": "entertainment"
+            }
+          },
+          {
+            "name": "get_summary",
+            "args": {
+              "period": "this_month"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-3.5-flash\\nPlease retry in 26.731237323s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '26s'}]}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "M05_correct_category",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_category_correction",
+        "difficulty": "medium",
+        "what_it_tests": "Category được sửa ở lượt sau."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Thêm chi tiêu 220000 đồng ăn uống."
+        },
+        {
+          "role": "user",
+          "content": "Sai rồi, là giải trí xem phim."
+        },
+        {
+          "role": "user",
+          "content": "Lưu với category đã sửa."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "record_transaction",
+            "args": {
+              "type": "expense",
+              "category": "entertainment",
+              "amount": 220000,
+              "note": "xem phim",
+              "confirmed": false
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-3.5-flash\\nPlease retry in 26.266924307s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '26s'}]}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "M06_switch_tool",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_switch_tool",
+        "difficulty": "hard",
+        "what_it_tests": "Intent mới thay get_category_breakdown bằng search_financial_advice."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Chi tiêu ăn uống hôm nay là bao nhiêu?"
+        },
+        {
+          "role": "user",
+          "content": "Thôi không cần xem chi tiêu nữa, tư vấn cho tôi về quy tắc 50/30/20."
+        },
+        {
+          "role": "user",
+          "content": "Chỉ cần thông tin quy tắc đó thôi."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "search_financial_advice",
+            "args": {
+              "topic": "50/30/20"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-3.5-flash\\nPlease retry in 25.884081775s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'model': 'gemini-3.5-flash', 'location': 'global'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '25s'}]}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "M07_cancel_previous_action",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_cancel",
+        "difficulty": "hard",
+        "what_it_tests": "Latest cancellation phải thắng record request cũ."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Ghi chi tiêu 100000 đồng mua sắm."
+        },
+        {
+          "role": "user",
+          "content": "Dừng lại, không ghi gì cả."
+        },
+        {
+          "role": "user",
+          "content": "Chỉ nói bạn đã hiểu yêu cầu hủy."
+        }
+      ],
+      "expect": {
+        "no_tool": true,
+        "behavior": "answer_without_tool"
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "unnecessary_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-3.5-flash\\nPlease retry in 25.494644656s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '25s'}]}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "M08_clarify_then_parallel",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_clarify_parallel",
+        "difficulty": "hard",
+        "what_it_tests": "Sau khi clarify gọi hai get_category_breakdown song song."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Chi tiêu tháng này thế nào?"
+        },
+        {
+          "role": "user",
+          "content": "Cả ăn uống và đi lại."
+        },
+        {
+          "role": "user",
+          "content": "So sánh hai danh mục đó."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "get_category_breakdown",
+            "args": {
+              "period": "this_month",
+              "category": "food"
+            }
+          },
+          {
+            "name": "get_category_breakdown",
+            "args": {
+              "period": "this_month",
+              "category": "transport"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-3.5-flash\\nPlease retry in 25.123381969s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '25s'}]}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "M09_confirmation_invalidated",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "confirmation_payload_change",
+        "difficulty": "hard",
+        "what_it_tests": "Số tiền thay đổi phải hỏi xác nhận lại bằng clarify."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Thêm chi tiêu 100000 đồng shopping."
+        },
+        {
+          "role": "user",
+          "content": "Đổi số tiền thành 150000 đồng."
+        },
+        {
+          "role": "user",
+          "content": "Hỏi lại xác nhận trước khi lưu."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "question": "Bạn xác nhận ghi chi tiêu 150000 đồng cho shopping?",
+              "response_type": "yes_no"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-3.5-flash\\nPlease retry in 24.732408961s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '24s'}]}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "M10_latest_intent_wins",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "latest_intent_replacement",
+        "difficulty": "hard",
+        "what_it_tests": "Không gọi stale get_category_breakdown từ turn đầu, chuyển sang bonus tool."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Cho tôi xem chi tiêu ăn uống."
+        },
+        {
+          "role": "user",
+          "content": "Không cần xem chi tiêu nữa."
+        },
+        {
+          "role": "user",
+          "content": "Dự báo chi tiêu tháng tới có vỡ quỹ không."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "budget_forecast_alert",
+            "args": {
+              "month": "next_month"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-3.5-flash\\nPlease retry in 24.258659818s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '24s'}]}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    }
+  ]
+}

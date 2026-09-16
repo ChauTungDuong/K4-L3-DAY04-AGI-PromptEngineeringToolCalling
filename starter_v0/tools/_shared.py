@@ -31,10 +31,13 @@ def period_dates(period: str, start_date: str = "", end_date: str = "") -> tuple
             start = end = today
         elif period == "this_week":
             start, end = today - timedelta(days=today.weekday()), today
+        elif period == "last_week":
+            end = today - timedelta(days=today.weekday() + 1)
+            start = end - timedelta(days=6)
         elif period == "this_month":
             start, end = today.replace(day=1), today
         else:
-            raise ValueError("period phải là today, this_week, this_month hoặc dùng đủ start_date/end_date")
+            raise ValueError("period phải là today, this_week, last_week, this_month hoặc dùng đủ start_date/end_date")
     if start > end:
         raise ValueError("start_date không được sau end_date")
     return start, end

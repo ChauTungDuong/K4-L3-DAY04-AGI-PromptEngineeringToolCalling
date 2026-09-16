@@ -4,7 +4,7 @@ tools:
     parameters:
       type: object
       properties:
-        period: {type: string, enum: [today, this_week, this_month, custom]}
+        period: {type: string, enum: [today, this_week, last_week, this_month, custom]}
         start_date: {type: string, default: "", description: "Ngày đầu kỳ YYYY-MM-DD; dùng cùng end_date."}
         end_date: {type: string, default: "", description: "Ngày cuối kỳ YYYY-MM-DD; dùng cùng start_date."}
       required: [period]
@@ -56,5 +56,5 @@ tools:
     parameters:
       type: object
       properties:
-        month: {type: string, pattern: "^\\d{4}-(0[1-9]|1[0-2])$", description: "Tháng theo YYYY-MM."}
+        month: {type: string, pattern: "^(next_month|\\d{4}-(0[1-9]|1[0-2]))$", description: "Tháng theo YYYY-MM hoặc next_month."}
       required: [month]
