@@ -273,5 +273,104 @@
     "currency": "VND",
     "payment_method": "e-wallet",
     "note": "Cơm tấm sườn bì chả trưa"
+  },
+  {
+    "id": "TXN-20260915-004",
+    "date": "2026-09-15",
+    "time": "20:52",
+    "type": "expense",
+    "amount": 320000,
+    "category": "food",
+    "note": "",
+    "currency": "VND",
+    "payment_method": "other"
+  },
+  {
+    "id": "TXN-20260915-005",
+    "date": "2026-09-15",
+    "time": "20:53",
+    "type": "expense",
+    "amount": 90000,
+    "category": "transport",
+    "note": "xăng xe",
+    "currency": "VND",
+    "payment_method": "other"
+  },
+  {
+    "id": "TXN-20260915-006",
+    "date": "2026-09-15",
+    "time": "20:53",
+    "type": "expense",
+    "amount": 250000,
+    "category": "food",
+    "note": "ăn tối",
+    "currency": "VND",
+    "payment_method": "other"
+  },
+  {
+    "id": "TXN-20260915-007",
+    "date": "2026-09-15",
+    "time": "20:54",
+    "type": "expense",
+    "amount": 900000,
+    "category": "shopping",
+    "note": "mua đồ",
+    "currency": "VND",
+    "payment_method": "other"
+  },
+  {
+    "id": "TXN-20260915-008",
+    "date": "2026-09-15",
+    "time": "20:54",
+    "type": "expense",
+    "amount": 5000000,
+    "category": "shopping",
+    "note": "",
+    "currency": "VND",
+    "payment_method": "other"
+  },
+  {
+    "id": "TXN-20260916-001",
+    "date": "2026-09-16",
+    "time": "00:26",
+    "type": "expense",
+    "amount": 90000,
+    "category": "transport",
+    "note": "",
+    "currency": "VND",
+    "payment_method": "other"
+  },
+  {
+    "id": "TXN-20260916-002",
+    "date": "2026-09-16",
+    "time": "00:31",
+    "type": "expense",
+    "amount": 250000,
+    "category": "food",
+    "note": "ăn tối",
+    "currency": "VND",
+    "payment_method": "other"
+  },
+  {
+    "id": "TXN-20260916-003",
+    "date": "2026-09-16",
+    "time": "00:40",
+    "type": "expense",
+    "amount": 90000,
+    "category": "transport",
+    "note": "",
+    "currency": "VND",
+    "payment_method": "other"
+  },
+  {
+    "id": "TXN-20260916-004",
+    "date": "2026-09-16",
+    "time": "00:41",
+    "type": "expense",
+    "amount": 250000,
+    "category": "food",
+    "note": "ăn tối",
+    "currency": "VND",
+    "payment_method": "other"
   }
 ]

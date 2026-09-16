@@ -1,0 +1,1313 @@
+{
+  "run_id": "v3-finance_B_base_openrouter_20260915T233629612291",
+  "version": "v3-finance",
+  "artifact_version": "v3-finance+pad1fa9e8f7e1+t8f1981ca977d",
+  "prompt_hash": "ad1fa9e8f7e162e85fda695c08d8b37aeec6f2b7787b72be63404bd5aefe8a9e",
+  "tools_hash": "8f1981ca977d5248dfa8556239a04b7369658f51a3e1690d6ee95daa84ab6c3a",
+  "phase": "B",
+  "suite": "base",
+  "provider": "openrouter",
+  "model": "openai/gpt-4o-mini",
+  "system_prompt": "/home/tuananh/vinuni/159/K4-L3-DAY04-ChauTungDuong-2A202602822-PromptEngineeringToolCalling/starter_v0/artifacts/system_prompt.md",
+  "tools": "/home/tuananh/vinuni/159/K4-L3-DAY04-ChauTungDuong-2A202602822-PromptEngineeringToolCalling/starter_v0/artifacts/tools.yaml",
+  "eval_cases": "data/eval_finance_base.json",
+  "dataset_id": "day04_v3_finance_base",
+  "dataset_role": "base",
+  "description": "Core eval for the Personal Finance Assistant Agent. Test expense tracking, budget management, transaction queries, and category analysis with tool routing accuracy.",
+  "generated_at": "2026-09-15T23:36:29",
+  "summary": {
+    "total_cases": 30,
+    "measured_cases": 0,
+    "provider_error_cases": 30,
+    "passed_cases": 0,
+    "case_accuracy": 0.0,
+    "failure_counts": {},
+    "observed_mismatch_counts": {}
+  },
+  "results": [
+    {
+      "id": "F01_query_today_spending",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "route_summary",
+        "difficulty": "easy",
+        "what_it_tests": "Hỏi tổng chi tiêu theo ngày phải dùng get_summary với period."
+      },
+      "input": "Hôm nay tôi chi tiêu bao nhiêu tiền?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "get_summary",
+            "args": {
+              "period": "today"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "BadRequestError: Error code: 400 - {'error': {'message': \"No models loaded. Please load a model in the developer page or use the 'lms load' command.\", 'type': 'invalid_request_error', 'param': 'model', 'code': None}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F02_query_week_spending",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "route_week_summary",
+        "difficulty": "easy",
+        "what_it_tests": "Tuần này phải map sang this_week trong get_summary."
+      },
+      "input": "Chi tiêu của tôi trong tuần này như thế nào?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "get_summary",
+            "args": {
+              "period": "this_week"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "BadRequestError: Error code: 400 - {'error': {'message': \"No models loaded. Please load a model in the developer page or use the 'lms load' command.\", 'type': 'invalid_request_error', 'param': 'model', 'code': None}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F03_category_food",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "route_category_breakdown",
+        "difficulty": "medium",
+        "what_it_tests": "Chi tiết theo danh mục phải dùng get_category_breakdown."
+      },
+      "input": "Cho tôi xem chi tiết chi tiêu ăn uống tháng này.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "get_category_breakdown",
+            "args": {
+              "period": "this_month",
+              "category": "food"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "BadRequestError: Error code: 400 - {'error': {'message': \"No models loaded. Please load a model in the developer page or use the 'lms load' command.\", 'type': 'invalid_request_error', 'param': 'model', 'code': None}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F04_add_expense_missing_amount",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "clarify_amount",
+        "difficulty": "medium",
+        "what_it_tests": "Thiếu số tiền phải hỏi lại bằng clarify, không đoán."
+      },
+      "input": "Thêm chi tiêu ăn sáng hôm nay, mua bánh mì.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "question": "Bạn chi bao nhiêu tiền?",
+              "response_type": "free_text",
+              "missing_fields": [
+                "amount"
+              ]
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "missing_info",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "BadRequestError: Error code: 400 - {'error': {'message': \"No models loaded. Please load a model in the developer page or use the 'lms load' command.\", 'type': 'invalid_request_error', 'param': 'model', 'code': None}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F05_out_of_scope_cooking",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "out_of_scope",
+        "difficulty": "easy",
+        "what_it_tests": "Yêu cầu ngoài quản lý tài chính không gọi tool."
+      },
+      "input": "Gợi ý cho tôi món ăn ngon hôm nay đi.",
+      "expect": {
+        "no_tool": true,
+        "behavior": "refuse"
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "out_of_scope",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "BadRequestError: Error code: 400 - {'error': {'message': \"No models loaded. Please load a model in the developer page or use the 'lms load' command.\", 'type': 'invalid_request_error', 'param': 'model', 'code': None}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F06_out_of_scope_weather",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "out_of_scope_weather",
+        "difficulty": "easy",
+        "what_it_tests": "Thời tiết không liên quan finance agent."
+      },
+      "input": "Thời tiết hôm nay có mưa không?",
+      "expect": {
+        "no_tool": true,
+        "behavior": "refuse"
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "out_of_scope",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "BadRequestError: Error code: 400 - {'error': {'message': \"No models loaded. Please load a model in the developer page or use the 'lms load' command.\", 'type': 'invalid_request_error', 'param': 'model', 'code': None}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F07_category_breakdown_transport",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "category_breakdown_transport",
+        "difficulty": "medium",
+        "what_it_tests": "Xem chi tiết category phải dùng get_category_breakdown."
+      },
+      "input": "Chi tiêu đi lại tháng này chi tiết ra sao?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "get_category_breakdown",
+            "args": {
+              "period": "this_month",
+              "category": "transport"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "BadRequestError: Error code: 400 - {'error': {'message': \"No models loaded. Please load a model in the developer page or use the 'lms load' command.\", 'type': 'invalid_request_error', 'param': 'model', 'code': None}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F08_summary_month",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "summary_month",
+        "difficulty": "easy",
+        "what_it_tests": "Tổng thu chi phải dùng get_summary."
+      },
+      "input": "Tổng thu chi tháng này của tôi thế nào?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "get_summary",
+            "args": {
+              "period": "this_month"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "BadRequestError: Error code: 400 - {'error': {'message': \"No models loaded. Please load a model in the developer page or use the 'lms load' command.\", 'type': 'invalid_request_error', 'param': 'model', 'code': None}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F09_financial_advice",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "route_advice",
+        "difficulty": "medium",
+        "what_it_tests": "Tra cứu kiến thức tài chính phải dùng search_financial_advice."
+      },
+      "input": "Quy tắc 50/30/20 là gì và áp dụng như thế nào?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "search_financial_advice",
+            "args": {
+              "topic": "50/30/20"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "BadRequestError: Error code: 400 - {'error': {'message': \"No models loaded. Please load a model in the developer page or use the 'lms load' command.\", 'type': 'invalid_request_error', 'param': 'model', 'code': None}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F10_meta_no_tool",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "meta_no_tool",
+        "difficulty": "easy",
+        "what_it_tests": "Câu hỏi khả năng không cần tool."
+      },
+      "input": "Bạn có thể giúp tôi những gì?",
+      "expect": {
+        "no_tool": true,
+        "behavior": "answer_without_tool"
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "unnecessary_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "BadRequestError: Error code: 400 - {'error': {'message': \"No models loaded. Please load a model in the developer page or use the 'lms load' command.\", 'type': 'invalid_request_error', 'param': 'model', 'code': None}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F11_record_income",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "route_record_income",
+        "difficulty": "medium",
+        "what_it_tests": "Thu nhập phải có type=income và confirmed=false trước khi lưu."
+      },
+      "input": "Ghi nhận thu nhập lương tháng này 20 triệu đồng.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "record_transaction",
+            "args": {
+              "type": "income",
+              "amount": 20000000,
+              "category": "salary",
+              "note": "Lương tháng này",
+              "confirmed": false
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "BadRequestError: Error code: 400 - {'error': {'message': \"No models loaded. Please load a model in the developer page or use the 'lms load' command.\", 'type': 'invalid_request_error', 'param': 'model', 'code': None}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F12_confirm_before_record",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "confirm_write",
+        "difficulty": "medium",
+        "what_it_tests": "Ghi dữ liệu là write action, phải xác nhận trước."
+      },
+      "input": "Lưu chi tiêu 80000 đồng xăng xe hôm nay.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "question": "Bạn xác nhận ghi chi tiêu 80000 đồng cho xăng xe?",
+              "response_type": "yes_no"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "BadRequestError: Error code: 400 - {'error': {'message': \"No models loaded. Please load a model in the developer page or use the 'lms load' command.\", 'type': 'invalid_request_error', 'param': 'model', 'code': None}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F13_parallel_summary_and_category",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "parallel_tools",
+        "difficulty": "hard",
+        "what_it_tests": "Một yêu cầu cần cả tổng và chi tiết category."
+      },
+      "input": "Cho tôi xem tổng chi tiêu tuần này và chi tiết chi tiêu ăn uống.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "get_summary",
+            "args": {
+              "period": "this_week"
+            }
+          },
+          {
+            "name": "get_category_breakdown",
+            "args": {
+              "period": "this_week",
+              "category": "food"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "BadRequestError: Error code: 400 - {'error': {'message': \"No models loaded. Please load a model in the developer page or use the 'lms load' command.\", 'type': 'invalid_request_error', 'param': 'model', 'code': None}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F14_missing_category",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "clarify_category",
+        "difficulty": "medium",
+        "what_it_tests": "Thiếu category phải hỏi lại bằng clarify."
+      },
+      "input": "Thêm chi tiêu 50000 đồng hôm nay.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "question": "Chi tiêu này thuộc danh mục nào?",
+              "response_type": "free_text",
+              "missing_fields": [
+                "category"
+              ]
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "missing_info",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "BadRequestError: Error code: 400 - {'error': {'message': \"No models loaded. Please load a model in the developer page or use the 'lms load' command.\", 'type': 'invalid_request_error', 'param': 'model', 'code': None}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F15_summary_specific_date_range",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "specific_date_range",
+        "difficulty": "medium",
+        "what_it_tests": "Khoảng ngày cụ thể phải dùng start_date và end_date."
+      },
+      "input": "Tổng thu chi từ ngày 1 đến 10 tháng 9 là bao nhiêu?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "get_summary",
+            "args": {
+              "start_date": "2026-09-01",
+              "end_date": "2026-09-10"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "BadRequestError: Error code: 400 - {'error': {'message': \"No models loaded. Please load a model in the developer page or use the 'lms load' command.\", 'type': 'invalid_request_error', 'param': 'model', 'code': None}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F16_compare_two_categories",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "multiple_categories",
+        "difficulty": "hard",
+        "what_it_tests": "Không được gộp hai categories vào một argument, phải gọi riêng."
+      },
+      "input": "So sánh chi tiêu ăn uống và đi lại tháng này.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "get_category_breakdown",
+            "args": {
+              "period": "this_month",
+              "category": "food"
+            }
+          },
+          {
+            "name": "get_category_breakdown",
+            "args": {
+              "period": "this_month",
+              "category": "transport"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "BadRequestError: Error code: 400 - {'error': {'message': \"No models loaded. Please load a model in the developer page or use the 'lms load' command.\", 'type': 'invalid_request_error', 'param': 'model', 'code': None}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F17_emergency_fund_advice",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "advice_emergency_fund",
+        "difficulty": "medium",
+        "what_it_tests": "Kiến thức tài chính phải dùng search_financial_advice."
+      },
+      "input": "Quỹ khẩn cấp là gì và nên dành bao nhiêu?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "search_financial_advice",
+            "args": {
+              "topic": "quỹ khẩn cấp"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "BadRequestError: Error code: 400 - {'error': {'message': \"No models loaded. Please load a model in the developer page or use the 'lms load' command.\", 'type': 'invalid_request_error', 'param': 'model', 'code': None}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F18_budget_forecast",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "route_bonus_forecast",
+        "difficulty": "hard",
+        "what_it_tests": "Bonus tool - dự báo và cảnh báo ngân sách."
+      },
+      "input": "Dự báo chi tiêu tháng tới và cảnh báo nếu có rủi ro vỡ quỹ.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "budget_forecast_alert",
+            "args": {
+              "month": "next_month"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "BadRequestError: Error code: 400 - {'error': {'message': \"No models loaded. Please load a model in the developer page or use the 'lms load' command.\", 'type': 'invalid_request_error', 'param': 'model', 'code': None}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F19_category_breakdown_shopping",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "breakdown_shopping",
+        "difficulty": "easy",
+        "what_it_tests": "Chi tiết category shopping phải dùng get_category_breakdown."
+      },
+      "input": "Chi tiêu mua sắm tuần này có gì?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "get_category_breakdown",
+            "args": {
+              "period": "this_week",
+              "category": "shopping"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "BadRequestError: Error code: 400 - {'error': {'message': \"No models loaded. Please load a model in the developer page or use the 'lms load' command.\", 'type': 'invalid_request_error', 'param': 'model', 'code': None}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "F20_record_expense_complete",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "record_confirmed",
+        "difficulty": "medium",
+        "what_it_tests": "Có 'xác nhận' phải gọi record với confirmed=true."
+      },
+      "input": "Xác nhận ghi chi tiêu 55000 đồng ăn trưa hôm nay, thanh toán ví điện tử.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "record_transaction",
+            "args": {
+              "type": "expense",
+              "amount": 55000,
+              "category": "food",
+              "note": "ăn trưa",
+              "confirmed": true
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "BadRequestError: Error code: 400 - {'error': {'message': \"No models loaded. Please load a model in the developer page or use the 'lms load' command.\", 'type': 'invalid_request_error', 'param': 'model', 'code': None}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "M01_record_expense_clarify_amount",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_fill_amount",
+        "difficulty": "hard",
+        "what_it_tests": "Carry category rồi điền amount, note và confirmed từ các lượt sau."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Thêm chi tiêu ăn trưa hôm nay."
+        },
+        {
+          "role": "user",
+          "content": "55000 đồng."
+        },
+        {
+          "role": "user",
+          "content": "Ghi chú là cơm tấm sườn, xác nhận lưu."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "record_transaction",
+            "args": {
+              "type": "expense",
+              "category": "food",
+              "amount": 55000,
+              "note": "cơm tấm sườn",
+              "confirmed": true
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "missing_info",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "BadRequestError: Error code: 400 - {'error': {'message': \"No models loaded. Please load a model in the developer page or use the 'lms load' command.\", 'type': 'invalid_request_error', 'param': 'model', 'code': None}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "M02_confirm_then_record",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_confirmation",
+        "difficulty": "hard",
+        "what_it_tests": "Sau khi xác nhận mới gọi record_transaction với confirmed=true."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Thêm chi tiêu 80000 đồng xăng xe hôm nay."
+        },
+        {
+          "role": "user",
+          "content": "Ghi chú đổ xăng Petrolimex."
+        },
+        {
+          "role": "user",
+          "content": "Xác nhận và lưu lại."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "record_transaction",
+            "args": {
+              "type": "expense",
+              "category": "transport",
+              "amount": 80000,
+              "note": "đổ xăng Petrolimex",
+              "confirmed": true
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "BadRequestError: Error code: 400 - {'error': {'message': \"No models loaded. Please load a model in the developer page or use the 'lms load' command.\", 'type': 'invalid_request_error', 'param': 'model', 'code': None}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "M03_correct_amount",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_correction",
+        "difficulty": "hard",
+        "what_it_tests": "Số tiền sửa sau phải thắng số tiền cũ."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Thêm chi tiêu ăn sáng 50000 đồng."
+        },
+        {
+          "role": "user",
+          "content": "À nhầm, là 40000 đồng."
+        },
+        {
+          "role": "user",
+          "content": "Lưu với số tiền đã sửa."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "record_transaction",
+            "args": {
+              "type": "expense",
+              "category": "food",
+              "amount": 40000,
+              "note": "ăn sáng",
+              "confirmed": false
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "BadRequestError: Error code: 400 - {'error': {'message': \"No models loaded. Please load a model in the developer page or use the 'lms load' command.\", 'type': 'invalid_request_error', 'param': 'model', 'code': None}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "M04_category_then_summary",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_carry_period",
+        "difficulty": "hard",
+        "what_it_tests": "Carry period this_month qua các lượt với tools khác nhau."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Chi tiêu giải trí tháng này của tôi là bao nhiêu?"
+        },
+        {
+          "role": "user",
+          "content": "Cho tôi xem tổng thu chi tháng này."
+        },
+        {
+          "role": "user",
+          "content": "Hiển thị cả hai thông tin."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "get_category_breakdown",
+            "args": {
+              "period": "this_month",
+              "category": "entertainment"
+            }
+          },
+          {
+            "name": "get_summary",
+            "args": {
+              "period": "this_month"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "BadRequestError: Error code: 400 - {'error': {'message': \"No models loaded. Please load a model in the developer page or use the 'lms load' command.\", 'type': 'invalid_request_error', 'param': 'model', 'code': None}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "M05_correct_category",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_category_correction",
+        "difficulty": "medium",
+        "what_it_tests": "Category được sửa ở lượt sau."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Thêm chi tiêu 220000 đồng ăn uống."
+        },
+        {
+          "role": "user",
+          "content": "Sai rồi, là giải trí xem phim."
+        },
+        {
+          "role": "user",
+          "content": "Lưu với category đã sửa."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "record_transaction",
+            "args": {
+              "type": "expense",
+              "category": "entertainment",
+              "amount": 220000,
+              "note": "xem phim",
+              "confirmed": false
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "BadRequestError: Error code: 400 - {'error': {'message': \"No models loaded. Please load a model in the developer page or use the 'lms load' command.\", 'type': 'invalid_request_error', 'param': 'model', 'code': None}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "M06_switch_tool",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_switch_tool",
+        "difficulty": "hard",
+        "what_it_tests": "Intent mới thay get_category_breakdown bằng search_financial_advice."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Chi tiêu ăn uống hôm nay là bao nhiêu?"
+        },
+        {
+          "role": "user",
+          "content": "Thôi không cần xem chi tiêu nữa, tư vấn cho tôi về quy tắc 50/30/20."
+        },
+        {
+          "role": "user",
+          "content": "Chỉ cần thông tin quy tắc đó thôi."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "search_financial_advice",
+            "args": {
+              "topic": "50/30/20"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "BadRequestError: Error code: 400 - {'error': {'message': \"No models loaded. Please load a model in the developer page or use the 'lms load' command.\", 'type': 'invalid_request_error', 'param': 'model', 'code': None}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "M07_cancel_previous_action",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_cancel",
+        "difficulty": "hard",
+        "what_it_tests": "Latest cancellation phải thắng record request cũ."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Ghi chi tiêu 100000 đồng mua sắm."
+        },
+        {
+          "role": "user",
+          "content": "Dừng lại, không ghi gì cả."
+        },
+        {
+          "role": "user",
+          "content": "Chỉ nói bạn đã hiểu yêu cầu hủy."
+        }
+      ],
+      "expect": {
+        "no_tool": true,
+        "behavior": "answer_without_tool"
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "unnecessary_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "BadRequestError: Error code: 400 - {'error': {'message': \"No models loaded. Please load a model in the developer page or use the 'lms load' command.\", 'type': 'invalid_request_error', 'param': 'model', 'code': None}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "M08_clarify_then_parallel",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_clarify_parallel",
+        "difficulty": "hard",
+        "what_it_tests": "Sau khi clarify gọi hai get_category_breakdown song song."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Chi tiêu tháng này thế nào?"
+        },
+        {
+          "role": "user",
+          "content": "Cả ăn uống và đi lại."
+        },
+        {
+          "role": "user",
+          "content": "So sánh hai danh mục đó."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "get_category_breakdown",
+            "args": {
+              "period": "this_month",
+              "category": "food"
+            }
+          },
+          {
+            "name": "get_category_breakdown",
+            "args": {
+              "period": "this_month",
+              "category": "transport"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "BadRequestError: Error code: 400 - {'error': {'message': \"No models loaded. Please load a model in the developer page or use the 'lms load' command.\", 'type': 'invalid_request_error', 'param': 'model', 'code': None}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "M09_confirmation_invalidated",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "confirmation_payload_change",
+        "difficulty": "hard",
+        "what_it_tests": "Số tiền thay đổi phải hỏi xác nhận lại bằng clarify."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Thêm chi tiêu 100000 đồng shopping."
+        },
+        {
+          "role": "user",
+          "content": "Đổi số tiền thành 150000 đồng."
+        },
+        {
+          "role": "user",
+          "content": "Hỏi lại xác nhận trước khi lưu."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "question": "Bạn xác nhận ghi chi tiêu 150000 đồng cho shopping?",
+              "response_type": "yes_no"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "BadRequestError: Error code: 400 - {'error': {'message': \"No models loaded. Please load a model in the developer page or use the 'lms load' command.\", 'type': 'invalid_request_error', 'param': 'model', 'code': None}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "M10_latest_intent_wins",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "latest_intent_replacement",
+        "difficulty": "hard",
+        "what_it_tests": "Không gọi stale get_category_breakdown từ turn đầu, chuyển sang bonus tool."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Cho tôi xem chi tiêu ăn uống."
+        },
+        {
+          "role": "user",
+          "content": "Không cần xem chi tiêu nữa."
+        },
+        {
+          "role": "user",
+          "content": "Dự báo chi tiêu tháng tới có vỡ quỹ không."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "budget_forecast_alert",
+            "args": {
+              "month": "next_month"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "BadRequestError: Error code: 400 - {'error': {'message': \"No models loaded. Please load a model in the developer page or use the 'lms load' command.\", 'type': 'invalid_request_error', 'param': 'model', 'code': None}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    }
+  ]
+}
