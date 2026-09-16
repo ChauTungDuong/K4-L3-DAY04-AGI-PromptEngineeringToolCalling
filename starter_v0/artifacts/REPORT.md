@@ -3,7 +3,7 @@
 ## Thong tin chung
 
 - Linh vuc: Quan ly tai chinh ca nhan tren du lieu tong hop.
-- Luong co ban: tra cuu thu chi, phan tich danh muc, tu van kien thuc, du bao ngan sach va ghi giao dich co xac nhan.
+- Luong co ban: tra cuu thu chi, phan tich danh muc, tu van kien thuc va ghi giao dich co xac nhan. Forecast ngan sach la chuc nang mo rong.
 - Eval: `../data/eval_finance_base.json` (30 case), `../data/eval_finance_adversarial.json` (12 case), `../data/eval_group.json` (10 case).
 - Team: AGI. Thanh vien: Chau Tung Duong, Nguyen Dinh Tuan Anh, Dao Duy Hieu, Do Manh Nghia, Nguyen Ngoc Tuyen.
 - Provider/model: LM Studio OpenAI-compatible, `qwen/qwen3-4b`, context 4096, parallel 1.
